@@ -1,0 +1,10 @@
+{
+  "name": "lishilu-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/check.mjs",
+    "start": "python3 -m http.server 4188 --bind 127.0.0.1 --directory dist",
+    "publish": "node scripts/publish.mjs"
+  }
+}

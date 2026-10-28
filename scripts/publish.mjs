@@ -1,0 +1,13 @@
+import {execFileSync} from 'node:child_process';
+const run=(program,args,options={})=>execFileSync(program,args,{stdio:'inherit',...options});
+const text=(args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
+const message=process.argv.slice(2).join(' ').trim();
+if(!message)throw new Error('请提供提交说明：npm run publish -- "说明本次改动"');
+if(text(['branch','--show-current'])!=='main')throw new Error('本流程仅发布main，请先确认当前分支。');
+run(process.execPath,['scripts/check.mjs']);
+const origin=text(['remote','get-url','origin']);
+if(!['https://github.com/SherineLee/lishilu-portfolio.git','git@github.com:SherineLee/lishilu-portfolio.git'].includes(origin))throw new Error('远端与作品集仓库不匹配，停止发布。');
+run('git',['add','--all']);
+if(text(['diff','--cached','--name-only']))run('git',['commit','-m',message]);
+run('git',['-c','http.proxy=','-c','https.proxy=','push','--set-upstream','origin','main']);
+console.log('已推送 '+text(['rev-parse','HEAD'])+'。请等待Vercel对应提交Ready，正式网址：https://lishilu-portfolio.vercel.app/');

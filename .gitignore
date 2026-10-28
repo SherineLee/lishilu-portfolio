@@ -1,0 +1,10 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.vercel/
+.openai/
+node_modules/
+work/
+*.log
+.vercel

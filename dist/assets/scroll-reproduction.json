@@ -1,0 +1,351 @@
+{
+  "id": "83b559b5-d042-47ca-8b19-a9fa7f851a33",
+  "revision": 0,
+  "last_node_id": 7,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        330,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "请上传浙大拼接底图.png",
+        "image"
+      ],
+      "title": "① 上传拼接底图（完整长卷）"
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        0,
+        440
+      ],
+      "size": [
+        330,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "请上传风格参考图.png",
+        "image"
+      ],
+      "title": "② 上传风格参考图（只借风格）"
+    },
+    {
+      "id": 3,
+      "type": "ImageCrop",
+      "pos": [
+        400,
+        0
+      ],
+      "size": [
+        300,
+        170
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "title": "③ 从长卷取一段：修改 x 切换位置",
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "ImageCrop"
+      },
+      "widgets_values": [
+        2436,
+        1044,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ImageScaleToTotalPixels",
+      "pos": [
+        400,
+        440
+      ],
+      "size": [
+        300,
+        130
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "title": "参考图缩放：限制本机内存",
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "ImageScaleToTotalPixels"
+      },
+      "widgets_values": [
+        "lanczos",
+        1.0,
+        8
+      ]
+    },
+    {
+      "id": 5,
+      "type": "ByteDanceSeedreamNodeV3",
+      "pos": [
+        790,
+        0
+      ],
+      "size": [
+        500,
+        560
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model.images.image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "name": "model.images.image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "Node name for S&R": "ByteDanceSeedreamNodeV3"
+      },
+      "widgets_values": [
+        "图1是浙江大学校园手动拼接底图，是本次编辑唯一的内容与构图来源。图2仅作为艺术风格参考。请把图1整体转绘为图2的绘画风格，借鉴图2的色彩、笔触、材质与光影，不要复制图2中的建筑、人物或构图。保留图1中各校园建筑的外形、相对位置、数量、道路和湖面的布局，保持横向连续的景观。将照片、像素天空与装饰素材统一成同一种画风，平滑融合拼接处，统一光照与透视。不要新增校区或地标，不要添加文字、水印、边框，不要把两张图并排拼贴。风格强度：中等，以保留建筑辨识度为优先。",
+        "seedream 5.0 pro",
+        "(2K) 3136x1344 (21:9)",
+        3136,
+        1344,
+        "standard",
+        20261027,
+        "fixed",
+        false,
+        true
+      ],
+      "widgets_values_named": {
+        "prompt": "图1是浙江大学校园手动拼接底图，是本次编辑唯一的内容与构图来源。图2仅作为艺术风格参考。请把图1整体转绘为图2的绘画风格，借鉴图2的色彩、笔触、材质与光影，不要复制图2中的建筑、人物或构图。保留图1中各校园建筑的外形、相对位置、数量、道路和湖面的布局，保持横向连续的景观。将照片、像素天空与装饰素材统一成同一种画风，平滑融合拼接处，统一光照与透视。不要新增校区或地标，不要添加文字、水印、边框，不要把两张图并排拼贴。风格强度：中等，以保留建筑辨识度为优先。",
+        "model": "seedream 5.0 pro",
+        "model.size_preset": "(2K) 3136x1344 (21:9)",
+        "model.width": 3136,
+        "model.height": 1344,
+        "model.prompt_optimization": "standard",
+        "model.seed": 20261027,
+        "control_after_generate": "fixed",
+        "model.watermark": false,
+        "model.thinking": true
+      },
+      "color": "#432",
+      "bgcolor": "#653",
+      "title": "④ 双图风格化：修改提示词 / seed"
+    },
+    {
+      "id": 6,
+      "type": "SaveImage",
+      "pos": [
+        1370,
+        0
+      ],
+      "size": [
+        420,
+        420
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "⑤ 预览并保存风格化片段",
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 5
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "ZJU_scroll/stylized_segment"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [
+        790,
+        650
+      ],
+      "size": [
+        990,
+        310
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "title": "阅读：费用、长卷处理与调参",
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "Note"
+      },
+      "widgets_values": [
+        "使用顺序：上传两张图 → 确认裁切宽高/x → 改提示词 → 登录后运行。\n\n这是云端 Seedream 双图编辑，需要 ComfyUI 账户和积分；运行时两图会传至服务端。本流程未执行付费生成。\n\n你的原底图 15748×1044，约15:1；本流程默认截取2436×1044一段，以21:9输出3136×1344，不会自动生成整幅。\n\n其余段修改x：0、2088、4176、6264、8352、10440、12528、13312（末段），相邻保留重叠；最后人工对齐融合。实际尺寸不同请自行调整。\n\n风格太弱：提示词改“强烈借鉴参考的笔触/配色”；建筑变形：改“轻度转绘，严格保留结构”。seed固定便于比较，改变seed探索变体。API没有本地KSampler的denoise/CFG。\n\n外接硬盘当前未能读取原图，两个上传位均留空待替换；原手办工作流保持独立。"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      3,
+      0,
+      5,
+      0,
+      "IMAGE"
+    ],
+    [
+      4,
+      4,
+      0,
+      5,
+      1,
+      "IMAGE"
+    ],
+    [
+      5,
+      5,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.65,
+      "offset": [
+        80,
+        80
+      ]
+    }
+  },
+  "version": 0.4
+}

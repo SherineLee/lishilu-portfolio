@@ -1,0 +1,7 @@
+.git
+.openai
+.env
+.env.*
+*.zip
+*.log
+.DS_Store
