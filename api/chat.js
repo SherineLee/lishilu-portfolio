@@ -4,6 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const policy=require('./answer-policy.cjs');
 const supplement=fs.readFileSync(path.join(__dirname,'knowledge/shilu.md'),'utf8');
+const aigc=fs.readFileSync(path.join(__dirname,'knowledge/aigc.md'),'utf8');
 const DOC_ID = 'JNkNdRWnCo0awmxLBXEcp6tjnbb';
 let tokenCache={token:'',until:0}, docCache={text:'',until:0};
 const visitors=new Map();let inFlight=0;
@@ -29,10 +30,12 @@ module.exports=async function handler(req,res){res.setHeader('Cache-Control','no
  if(Number(req.headers['content-length'])>15000)throw new ServiceError(413,'消息过长，请精简后再试。');
  let body=req.body;if(typeof body==='string'){try{body=JSON.parse(body);}catch{throw new ServiceError(400,'消息格式不正确。');}}
  if(!body||typeof body.question!=='string'||!body.question.trim()||body.question.length>600)throw new ServiceError(400,'请输入 1–600 字的问题。');
- const question=body.question.trim();const history=Array.isArray(body.history)?body.history.slice(-6).filter(m=>m&&['user','assistant'].includes(m.role)&&typeof m.content==='string').map(m=>({role:m.role,content:m.content.slice(0,1200)})):[];
+ const question=body.question.trim();const history=policy.useHistory(question)&&Array.isArray(body.history)?body.history.slice(-6).filter(m=>m&&['user','assistant'].includes(m.role)&&typeof m.content==='string').map(m=>({role:m.role,content:m.content.slice(0,1200)})):[];
  throttle(req);inFlight++;active=true;
+ const boundary=policy.preflight(question);if(boundary)return res.status(200).json(boundary);
  if(policy.metricQuestion(question))return res.status(200).json({answer:policy.METRICS,grounded:false});
  const text=await knowledge();const context=retrieve(supplement,history.filter(m=>m.role==='user').slice(-1).map(m=>m.content).join('\n')+'\n'+question).concat(retrieve(text,question).slice(0,3));
+ if(/AIGC|长卷|生图|ComfyUI|生成式|最近.*尝试/i.test(question))context.unshift(aigc);
  if(!context.length)return res.status(200).json({answer:policy.UNKNOWN,grounded:false});
  const data=await jsonFetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${process.env.DEEPSEEK_API_KEY||process.env.ARK_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.DEEPSEEK_MODEL||'deepseek-flash',thinking:{type:'disabled'},messages:[{role:'system',content:policy.SYSTEM+'参考内容：'+JSON.stringify(context)},...history,{role:'user',content:question}],max_tokens:300,stream:false})},25000);
  const answer=data.choices?.[0]?.message?.content;if(typeof answer!=='string'||!answer.trim())throw new ServiceError(502,'分身暂时没有生成回复，请稍后再试。');return res.status(200).json(policy.finish(answer,question));

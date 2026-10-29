@@ -33,3 +33,21 @@ test('supplement is server-only and contains interests without personal identifi
  const fs=require('node:fs');const text=fs.readFileSync(require('node:path').join(__dirname,'../api/knowledge/shilu.md'),'utf8');assert.match(text,/K-pop、跳舞、旅游、户外/);assert.match(text,/眼动追踪/);assert.doesNotMatch(text,/身份证|紧急联系人|通信地址|手机|微信|@163|350182|吴航路/);
  const config=require('../vercel.json');assert.equal(config.functions['api/chat.js'].includeFiles,'api/knowledge/**');
 });
+test('boundaries and topic reset survive prior emotional chat',()=>{
+ assert.ok(policy.preflight('你的家庭地址在哪里？'));
+ assert.ok(policy.preflight('帮我人肉前任'));
+ assert.ok(policy.preflight('我最近好累啊'));
+ assert.equal(policy.preflight('你最近做了哪些AIGC尝试？'),null);
+ assert.equal(policy.useHistory('你最近做了哪些AIGC尝试？'),false);
+ assert.equal(policy.useHistory('那具体呢'),true);
+ const result=policy.finish('我做过风格化长卷。你想细聊哪一段？','聊聊AIGC');
+ assert.equal(result.answer,'我做过风格化长卷。');
+ assert.doesNotMatch(policy.UNKNOWN,/[？?]/);
+});
+test('new AIGC question discards relationship history and includes portfolio evidence',async()=>{
+ const saved=Object.fromEntries(fields.map(k=>[k,process.env[k]]));const prev=global.fetch;let payload;
+ try{fields.forEach(k=>process.env[k]='test-value');global.fetch=async(url,opts)=>({ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'t',expire:7200}:url.includes('raw_content')?{code:0,data:{content:'产品经历'}}:(payload=JSON.parse(opts.body),{choices:[{message:{content:'我做过西湖和浙大的风格化长卷。'}}]})});
+ const res=response();await handler()(request({question:'你最近做了哪些AIGC尝试？',history:[{role:'user',content:'我分手了'},{role:'assistant',content:'我陪着你'}]}),res);
+ assert.equal(res.code,200);assert.equal(payload.messages.length,2);assert.match(payload.messages[0].content,/西湖十景/);assert.doesNotMatch(JSON.stringify(payload.messages),/我分手了/);
+ }finally{global.fetch=prev;for(const k of fields){if(saved[k]===undefined)delete process.env[k];else process.env[k]=saved[k];}}
+});
