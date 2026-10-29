@@ -1,6 +1,6 @@
 const PROJECTS = {
  hehao: {
-  name:'和好喵', en:'HEHAOMIAO', color:'peach', tagline:'让想说的话，慢慢变得清楚。', brief:'从冲突梳理到可编辑表达，再到一张有温度的分享卡片。', tags:['AI 沟通辅助','策略路由','分层评测'], image:'hehao-card.png', url:'https://hehaomiao.vercel.app/',
+  name:'和好喵', en:'HEHAOMIAO', color:'peach', tagline:'让想说的话，慢慢变得清楚。', brief:'一款AI驱动的情感修复产品，围绕亲密关系在冲突场景中存在措辞困难、容易产生情绪对抗等痛点，帮助冲突双方提升表达质量与回应率', tags:['AI 沟通辅助','策略路由','分层评测'], image:'hehao-card.png', url:'https://hehaomiao.vercel.app/',
   intro:'和好喵帮助想道歉、解释误会或表达边界的人，把具体事实、自己的责任与下一步行动整理成可以说出口的话。发起者确认后生成卡片，接收方可以自主回应。',
   meta:[['我的角色','产品定义 / 交互设计 / Codex 辅助开发'],['项目状态','已有可访问版本，持续迭代'],['验证范围','程序回归与评测机制；真实使用效果继续积累']],
   storyTitle:'想沟通，却不知道从哪句话开始',
