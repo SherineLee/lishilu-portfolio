@@ -1,0 +1,2 @@
+'use strict';const e=require('../../server/editor.cjs');const pdf=require('../../server/pdf-publish.cjs');
+module.exports=async(req,res)=>{try{e.base(req,res);e.owner(req);if(req.method!=='POST')throw e.fail(405,'不支持此操作。');if(Number(req.headers['content-length'])>2900000)throw e.fail(413,'PDF 分段过大。');return res.status(200).json(await pdf.chunk(req.body));}catch(err){return res.status(err.status||500).json({error:err.status?err.message:'PDF 上传暂时失败，原文件仍保留。'});}};

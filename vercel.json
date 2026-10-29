@@ -25,6 +25,9 @@
     },
     "api/editor/publish.js": {
       "maxDuration": 60
+    },
+    "api/editor/pdf.js": {
+      "maxDuration": 60
     }
   }
 }

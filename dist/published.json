@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "revision": "66a7640d-b702-4a84-b578-b5d49e595f83",
+  "revision": "92e1638c-04bc-4b2e-a0cd-3a08e51181ee",
   "updatedAt": "2026-10-29T15:49:42.387Z",
   "patches": {
     "home": {
@@ -8,5 +8,132 @@
         "image": "assets/published/f72614d49001b18e5702cb3da31f31af680bf759e466954c844816d2525e386b.png"
       }
     }
+  },
+  "pdf": {
+    "name": "李诗璐作品集.pdf",
+    "size": 61631308,
+    "sha256": "d41a58d00834857d86acc3b68364b88b87d43cd63c6b706298a4c6964826e956",
+    "parts": [
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0000.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0001.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0002.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0003.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0004.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0005.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0006.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0007.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0008.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0009.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0010.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0011.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0012.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0013.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0014.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0015.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0016.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0017.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0018.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0019.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0020.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0021.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0022.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0023.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0024.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0025.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0026.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0027.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0028.bin",
+        "size": 2097152
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0029.bin",
+        "size": 813900
+      }
+    ]
   }
 }
