@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "revision": "92e1638c-04bc-4b2e-a0cd-3a08e51181ee",
-  "updatedAt": "2026-10-29T15:49:42.387Z",
+  "revision": "85e8dd8c-4193-4784-a720-30880cd0b50f",
+  "updatedAt": "2026-10-29T16:35:50.936259+00:00",
   "patches": {
     "home": {
       "main > section:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > img:nth-of-type(1)": {
-        "image": "assets/published/f72614d49001b18e5702cb3da31f31af680bf759e466954c844816d2525e386b.png"
+        "image": "assets/published/7506f255d3f5cfb9febe1c270ca8bd34446c70f3fdc5be7be320d11bce8a98c5.jpg"
       }
     }
   },
@@ -133,6 +133,153 @@
       {
         "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/0029.bin",
         "size": 813900
+      }
+    ],
+    "previewPages": [
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-000.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-001.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-002.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-003.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-004.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-005.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-006.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-007.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-008.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-009.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-010.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-011.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-012.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-013.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-014.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-015.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-016.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-017.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-018.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-019.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-020.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-021.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-022.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-023.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-024.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-025.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-026.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-027.webp",
+        "width": 2200,
+        "height": 779
+      },
+      {
+        "path": "assets/published/pdf/dcac910b-c0f1-4bde-b4ff-9f9a227d6f23/preview-028.webp",
+        "width": 2200,
+        "height": 779
       }
     ]
   }
