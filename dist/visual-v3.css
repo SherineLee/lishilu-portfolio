@@ -27,3 +27,11 @@ body .cabin-return{border:0!important;background:#f0f1f3ed!important;color:var(-
 @media(max-width:850px){body>header{padding:18px 24px 8px;min-height:88px}nav{gap:4px;padding-bottom:6px}nav a{font-size:12px;padding:9px 12px}.home-grid{gap:40px}.profile h1{font-size:38px}main{padding-top:32px}}
 @media(max-width:560px){.profile h1{font-size:34px}.profile-inner{grid-template-columns:130px 1fr;gap:22px}.module-grid{gap:18px}.module-card,.module-card:nth-child(n){padding:24px 20px;min-height:175px}.module-card h2{font-size:17px}.module-card p{font-size:12px}.module-card .arrow{right:18px;bottom:14px}.page-heading h1{font-size:32px}.page-heading{margin-bottom:32px}.experience time{margin:0;width:100%}.scroll-stage{padding:14px}.tab-bar{gap:10px}.tab-bar button{padding:10px 14px;font-size:13px}.scroll-tabs{gap:4px}.scroll-tabs button{padding:9px 12px}.figure>img{border-radius:16px}.workflow-story>section{gap:26px}.project-card-body{padding:24px}.ppt-case-head{padding-top:0}}
 @media(prefers-reduced-motion:reduce){.module-card,.project-card,.button{transition:none;transform:none}}
+/* About page: personal introduction only; retain DOM for existing drafts. */
+body>header .brand,body>footer>a{display:none}
+.home-grid>.index-wrap{display:none}
+.home-grid{grid-template-columns:1fr;max-width:780px;margin:24px auto 0;min-height:0}
+.home-grid .profile-inner{grid-template-columns:180px 1fr;gap:36px;max-width:620px}
+.home-grid .intro-copy{max-width:680px;margin-top:36px}
+body>header nav{margin-left:0;margin-right:auto}
+@media(max-width:560px){.home-grid{margin-top:8px}.home-grid .profile-inner{grid-template-columns:130px 1fr;gap:24px}.home-grid .intro-copy{margin-top:28px}}
