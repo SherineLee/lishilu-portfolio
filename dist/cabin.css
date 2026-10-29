@@ -86,10 +86,10 @@ body.cabin-on > *:not(#cabin) { display: none !important; }
 
 /* 站内「回到小屋」入口 */
 .cabin-return {
-  position: fixed; left: 20px; bottom: 20px; z-index: 60;
+  position: fixed; right: 20px; bottom: 20px; z-index: 60;
   display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px 10px 12px;
   border-radius: 999px; border: 1px solid rgba(163, 26, 23, 0.22); cursor: pointer; font-family: inherit;
-  background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2);
   color: var(--cb-red); font-size: 13px; letter-spacing: 0.05em;
   box-shadow: 0 10px 26px rgba(20, 30, 44, 0.14);
   transition: transform 0.3s var(--cb-ease), box-shadow 0.3s var(--cb-ease), background 0.3s var(--cb-ease);
