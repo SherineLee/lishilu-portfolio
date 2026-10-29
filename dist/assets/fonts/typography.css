@@ -1,0 +1,4 @@
+@font-face{font-family:AlibabaPuHuiTi;src:url('./AlibabaPuHuiTi-3-55-Regular.ttf') format('truetype');font-style:normal;font-weight:100 500;font-display:swap}
+@font-face{font-family:AlibabaPuHuiTi;src:url('./AlibabaPuHuiTi-3-85-Bold.ttf') format('truetype');font-style:normal;font-weight:600 900;font-display:swap}
+:root{--body:AlibabaPuHuiTi,'PingFang SC',sans-serif;--display:AlibabaPuHuiTi,'PingFang SC',sans-serif;--hand:AlibabaPuHuiTi,'PingFang SC',sans-serif}
+body,body *{font-family:AlibabaPuHuiTi,'PingFang SC',sans-serif!important}
