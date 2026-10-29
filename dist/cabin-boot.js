@@ -9,7 +9,7 @@
   function ensureCss() {
     if (document.getElementById('cb-css')) return;
     var link = document.createElement('link');
-    link.id = 'cb-css'; link.rel = 'stylesheet'; link.href = 'cabin.css';
+    link.id = 'cb-css'; link.rel = 'stylesheet'; link.href = 'cabin.css?v=controls-2';
     document.head.appendChild(link);
   }
 
@@ -19,7 +19,7 @@
     if (pending) { pending.push(cb); return; }
     pending = [cb];
     var script = document.createElement('script');
-    script.src = 'cabin.js';
+    script.src = 'cabin.js?v=art-2';
     script.async = true;
     script.onload = function () {
       var list = pending; pending = null;
