@@ -7,7 +7,7 @@ function metricQuestion(q){return /(?:数据|指标|转化率|点击率|留存|�
 function finish(answer,question){
  if(metricQuestion(question))return {answer:METRICS,grounded:false};
  const clean=String(answer).replace(/[*#`]/g,'').trim();
- if(META.test(clean)||NUMBERS.test(clean))return {answer:UNKNOWN,grounded:false};
+ if(META.test(clean)||NUMBERS.test(clean.replace(/(?:Hunyuan3D|AR-HUD|3D|ControlNet|IPAdapter)/gi,'')))return {answer:UNKNOWN,grounded:false};
  const sentences=clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[];
  const short=sentences.slice(0,3).join('').trim();
  if(!short||short.length>150)return {answer:UNKNOWN,grounded:false};
@@ -41,6 +41,6 @@ module.exports.finish=(answer,q)=>{
  clean=parts.filter(s=>!/[？?]/.test(s)&&!/(?:要不要|想不想|你想|你更|想听|想了解|再展开|聊聊.*(?:吗|哪)|可以问我)/.test(s)).join('').trim();
  if(PRIVACY.test(clean)||UNSAFE.test(clean))return {answer:module.exports.UNKNOWN,grounded:false};
  const result=oldFinish(clean,q);
- if(result.answer===UNKNOWN)result.answer=module.exports.UNKNOWN;
+ if(result.answer===UNKNOWN){result.answer=module.exports.UNKNOWN;if(/AIGC|长卷|生图|ComfyUI|生成式/i.test(q)){result.answer='我做过西湖、浙大和宁波的风格化长卷，也尝试了电商生图和手绘到立体表达。结合生成式创作向视频、三维工作流延伸的趋势，这些作品更看重风格一致性、结构可控和动态浏览体验。';result.grounded=true;}}
  return result;
 };
