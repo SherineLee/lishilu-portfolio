@@ -141,3 +141,7 @@ body.cabin-on > *:not(#cabin) { display: none !important; }
 .cb-chip:hover, .cb-chip:active { border-color: rgba(212, 169, 78, 0.9); background: rgba(163, 26, 23, 0.5); }
 .cb-chip i { font-style: normal; font-size: 10.5px; letter-spacing: .08em; color: var(--cb-gold); }
 .cb-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* The hint pill is non-interactive; navigation buttons must override its specificity. */
+#cabin #cb-back,#cabin #cb-skip{pointer-events:none;width:max-content;max-width:calc(100vw - 32px)}
+#cabin #cb-back{right:auto}
+#cabin #cb-back.show,#cabin #cb-skip.show{pointer-events:auto;z-index:70}

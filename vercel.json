@@ -22,6 +22,9 @@
     "api/chat.js": {
       "maxDuration": 60,
       "includeFiles": "api/knowledge/**"
+    },
+    "api/editor/publish.js": {
+      "maxDuration": 60
     }
   }
 }

@@ -4,7 +4,7 @@ if(new URLSearchParams(location.search).get('edit')!=='1')return;
 const KEY='shilu-portfolio-draft-v1';
 let patches={};try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');if(saved&&typeof saved==='object'&&!Array.isArray(saved))patches=saved;}catch{}
 let undo=[],redo=[],selected=null,preview=false,initial='';
-const bar=document.createElement('aside');bar.className='draft-bar';bar.setAttribute('aria-label','草稿编辑工具');bar.innerHTML=`<div class="draft-bar-top"><strong>作品集草稿</strong><span id="draft-status" role="status">保存在当前浏览器</span><button data-draft="preview">预览草稿</button><button data-draft="undo">撤销</button><button data-draft="redo">重做</button><button data-draft="export">导出修改</button><a href="${location.pathname}" target="_blank" rel="noopener">查看正式版 ↗</a></div><div class="draft-bar-bottom"><span id="draft-tip">点击文字直接修改；点击图片或空白选中内容，再删除。</span><button data-draft="image">替换选中图片</button><button data-draft="parent">选择外层内容</button><button data-draft="delete">删除选中内容</button><button data-draft="reset">清空草稿</button></div>`;
+const bar=document.createElement('aside');bar.className='draft-bar';bar.setAttribute('aria-label','草稿编辑工具');bar.innerHTML=`<div class="draft-bar-top"><strong>作品集草稿</strong><span id="draft-status" role="status">保存在当前浏览器</span><button data-draft="preview">预览草稿</button><button data-draft="undo">撤销</button><button data-draft="redo">重做</button><button data-draft="export">导出修改</button><button data-draft="publish">一键发布</button><button data-draft="logout" hidden>退出登录</button><a href="${location.pathname}" target="_blank" rel="noopener">查看正式版 ↗</a></div><div class="draft-bar-bottom"><span id="draft-tip">点击文字直接修改；点击图片或空白选中内容，再删除。</span><button data-draft="image">替换选中图片</button><button data-draft="parent">选择外层内容</button><button data-draft="delete">删除选中内容</button><button data-draft="reset">清空草稿</button></div>`;
 document.body.append(bar);document.body.classList.add('draft-active');
 const status=bar.querySelector('#draft-status');
 function key(){let r=location.hash.slice(1)||'home';return r==='aigc/scroll'?'aigc':r;}
@@ -26,6 +26,8 @@ document.addEventListener('click',e=>{if(preview||!main.contains(e.target))retur
 bar.addEventListener('mousedown',e=>{if(e.target.closest('button'))e.preventDefault();});
 bar.addEventListener('click',e=>{const action=e.target.closest('[data-draft]')?.dataset.draft;if(!action)return;document.activeElement?.blur();
  if(action==='image'){const img=selected?.tagName==='IMG'?selected:selected?.querySelector('img');if(!img){status.textContent='请先点击要替换的图片';return;}const selector=path(img);const page=key();const picker=document.createElement('input');picker.type='file';picker.accept='image/png,image/jpeg,image/webp';picker.onchange=async()=>{const file=picker.files[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)){status.textContent='请选择 JPG、PNG 或 WebP 图片';return;}if(file.size>3*1024*1024){status.textContent='请上传小于 3 MB 的图片，以便保存浏览器草稿';return;}try{await createImageBitmap(file).then(b=>b.close());const reader=new FileReader();reader.onload=()=>{snapshot();patches[page]||={};patches[page][selector]={...patches[page][selector],image:reader.result};save();refresh();};reader.readAsDataURL(file);}catch{status.textContent='图片无法读取，请更换文件';}};picker.click();}
+ if(action==='publish'){window.editorPublisher?.publish();}
+ if(action==='logout'){window.editorPublisher?.logout();}
  if(action==='preview'){preview=!preview;refresh();}
  if(action==='parent'&&selected&&selected.parentElement!==main){const parent=selected.parentElement;if(main.contains(parent))select(parent);}
  if(action==='delete'&&selected&&!preview){snapshot();const selector=path(selected);patches[key()]||={};patches[key()][selector]={...patches[key()][selector],hidden:true};save();refresh();}
@@ -35,5 +37,5 @@ bar.addEventListener('click',e=>{const action=e.target.closest('[data-draft]')?.
  if(action==='export'){const blob=new Blob([JSON.stringify({format:'shilu-portfolio-draft',version:1,site:'https://lishilu-portfolio.vercel.app/',exportedAt:new Date().toISOString(),patches},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='作品集修改-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 });
 window.addEventListener('beforeunload',()=>document.activeElement?.blur());
-window.portfolioDraft={render};save();render();
+window.portfolioDraft={render,getPatches:()=>JSON.parse(JSON.stringify(patches)),clearPublished(sent){snapshot();for(const[page,items]of Object.entries(sent)){for(const[selector,p]of Object.entries(items))if(JSON.stringify(patches[page]?.[selector])===JSON.stringify(p))delete patches[page][selector];if(patches[page]&&!Object.keys(patches[page]).length)delete patches[page];}save();refresh();}};save();render();
 })();
