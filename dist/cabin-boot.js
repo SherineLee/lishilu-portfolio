@@ -19,7 +19,7 @@
     if (pending) { pending.push(cb); return; }
     pending = [cb];
     var script = document.createElement('script');
-    script.src = 'cabin.js?v=art-2';
+    script.src = 'cabin.js?v=art-3';
     script.async = true;
     script.onload = function () {
       var list = pending; pending = null;
