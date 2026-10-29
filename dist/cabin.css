@@ -119,3 +119,25 @@ body.cabin-on > *:not(#cabin) { display: none !important; }
 @media (max-width: 720px) {
   body.has-cabin-btn main { padding-bottom: 92px; }
 }
+
+/* 竖屏：五幅画在墙上偏小，底部给出可读的标题按钮 */
+#cb-dock {
+  position: absolute; left: 0; right: 0; bottom: 12px; z-index: 56;
+  display: none; flex-wrap: wrap; justify-content: center; gap: 7px; padding: 0 12px;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .5s var(--cb-ease), transform .5s var(--cb-ease);
+}
+#cb-dock.show { opacity: 1; transform: none; }
+@media (max-aspect-ratio: 1/1) { #cb-dock.show { display: flex; } #cb-hallhint.show { display: none !important; } }
+@media (min-aspect-ratio: 1/1) { #cb-dock { display: none !important; } }
+.cb-chip {
+  display: inline-flex; align-items: center; gap: 7px; max-width: 100%;
+  padding: 8px 13px; border-radius: 999px; cursor: pointer; font-family: inherit;
+  background: rgba(16, 10, 6, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 169, 78, 0.4); color: var(--cb-cream);
+  font-size: 12.5px; letter-spacing: .04em; line-height: 1.1;
+  -webkit-tap-highlight-color: transparent; transition: border-color .3s var(--cb-ease), background .3s var(--cb-ease);
+}
+.cb-chip:hover, .cb-chip:active { border-color: rgba(212, 169, 78, 0.9); background: rgba(163, 26, 23, 0.5); }
+.cb-chip i { font-style: normal; font-size: 10.5px; letter-spacing: .08em; color: var(--cb-gold); }
+.cb-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
