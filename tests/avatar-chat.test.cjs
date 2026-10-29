@@ -1,0 +1,16 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');
+const originalFetch=global.fetch;const fields=['ARK_API_KEY','ARK_MODEL','FEISHU_APP_ID','FEISHU_APP_SECRET'];
+function handler(){delete require.cache[require.resolve('../api/chat.js')];return require('../api/chat.js');}
+function response(){return {headers:{},setHeader(k,v){this.headers[k]=v;},status(n){this.code=n;return this;},json(data){this.data=data;return this;}};}
+function request(body={question:'你有几段实习？'}){return {method:'POST',headers:{origin:'https://lishilu-portfolio.vercel.app','x-forwarded-for':'test'},body};}
+test('avatar endpoint behavior',{concurrency:false},async t=>{
+const before=Object.fromEntries(fields.map(k=>[k,process.env[k]]));
+try{
+ await t.test('unconfigured service returns an honest unavailable state',async()=>{fields.forEach(k=>delete process.env[k]);const res=response();await handler()(request(),res);assert.equal(res.code,503);assert.ok(!('answer'in res.data));});
+ fields.forEach(k=>process.env[k]='test-value');
+ await t.test('rejects foreign origins and invalid messages without upstream calls',async()=>{global.fetch=()=>{throw Error('must not call')};const h=handler();for(const[req,status]of [[{...request(),headers:{origin:'https://other.example'}},403],[request({question:'a'.repeat(601)}),400],[{...request(),method:'GET'},405]]){const res=response();await h(req,res);assert.equal(res.code,status);}});
+ await t.test('retrieves document then calls Doubao, without exposing raw documents',async()=>{const calls=[];global.fetch=async(url,opts)=>{calls.push({url,body:opts.body});return {ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'test-token',expire:7200}:url.includes('raw_content')?{code:0,data:{content:'我有三段产品实习，分别是腾讯元宝、美团点评、携程智行。'}}:{choices:[{message:{content:'我有三段产品实习。'}}]}}};const res=response();await handler()(request(),res);assert.equal(res.code,200);assert.equal(res.data.answer,'我有三段产品实习。');assert.equal(calls.length,3);assert.ok(calls[2].url.startsWith('https://ark.cn-beijing.volces.com/'));assert.ok(JSON.parse(calls[2].body).messages[0].content.includes('腾讯元宝'));assert.deepEqual(Object.keys(res.data).sort(),['answer','grounded']);});
+ await t.test('unknown topic does not invent facts or spend a model call',async()=>{let count=0;global.fetch=async url=>{count++;return {ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'t',expire:7200}:{code:0,data:{content:'三段产品实习：腾讯元宝、美团点评、携程智行。'}}}};const res=response();await handler()(request({question:'喜欢什么宠物？'}),res);assert.equal(res.code,200);assert.equal(res.data.grounded,false);assert.equal(count,2);});
+ await t.test('document permission failure does not fall back to invented answers',async()=>{let count=0;global.fetch=async url=>{count++;return {ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'t',expire:7200}:{code:99991672}}};const res=response();await handler()(request(),res);assert.equal(res.code,503);assert.equal(count,2);assert.ok(!('answer'in res.data));});
+}finally{global.fetch=originalFetch;for(const key of fields){if(before[key]===undefined)delete process.env[key];else process.env[key]=before[key];}}
+});
