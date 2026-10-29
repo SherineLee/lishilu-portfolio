@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多风格艺术长卷 · 全流程工作流</title>
+<style>
+  :root {
+    --brown: #5C3B22;
+    --bar: #5E5E5E;
+    --bg: #EEEAE1;
+    --card: #F7F6F3;
+    --line: #8F8F8F;
+    --text: #555555;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #D9D4C9;
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", "Source Han Sans SC", sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .stage-wrap { width: 1280px; height: 720px; transform-origin: center center; flex-shrink: 0; }
+  .slide {
+    width: 1280px; height: 720px;
+    background: var(--bg);
+    padding: 56px 60px 58px 60px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 8px 30px rgba(60, 40, 20, .18);
+  }
+
+  /* 标题 */
+  .title-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 12px; }
+  .title { font-size: 28px; font-weight: 700; color: #2B2B2B; line-height: 1.25; }
+  .subtitle { font-size: 14px; color: #666; line-height: 1.4; }
+
+  /* 阶段列 */
+  .columns { display: flex; flex-direction: row; height: 392px; }
+  .col { display: flex; flex-direction: column; }
+  .col-200 { width: 200px; }
+  .col-500 { width: 500px; }
+  .stage { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+  .stage-label { font-size: 14px; font-weight: 700; color: #333; line-height: 1.3; white-space: nowrap; }
+  .stage-bar { height: 5px; border-radius: 2px; background: var(--bar); }
+  .stage-bar.core { background: var(--brown); }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+  .sub-cols { display: flex; flex-direction: row; gap: 20px; }
+  .sub-col { width: 240px; display: flex; flex-direction: column; gap: 12px; }
+
+  .arrow { width: 20px; display: flex; justify-content: center; padding-top: 13px; }
+
+  /* 卡片 */
+  .card { border: 1.5px solid var(--line); border-radius: 8px; background: var(--card); overflow: hidden; }
+  .card-head {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--brown); padding: 6px 12px;
+  }
+  .card-head::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%; background: #E9DCCB; flex-shrink: 0;
+  }
+  .card-head span { font-size: 17px; font-weight: 700; color: #fff; line-height: 1.2; white-space: nowrap; }
+  .card-body { padding: 8px 12px; font-size: 14px; color: var(--text); line-height: 1.45; }
+  .card-body.row { display: flex; flex-direction: row; gap: 10px; align-items: center; }
+  .card-body.col { display: flex; flex-direction: column; gap: 6px; }
+  .thumb-ref { width: 48px; height: 72px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+  .thumbs { display: flex; gap: 8px; }
+  .thumbs img { width: 104px; height: 36px; object-fit: cover; border-radius: 5px; }
+
+  /* 图片块 */
+  .pic { position: relative; height: 92px; border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pic .tag {
+    position: absolute; top: 6px; left: 6px;
+    background: var(--brown); color: #fff; border-radius: 6px;
+    padding: 1px 8px; font-size: 14px; line-height: 1.3;
+  }
+
+  /* 底部对比带 */
+  .compare { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .compare-row { display: flex; flex-direction: row; align-items: center; gap: 14px; }
+  .chip {
+    width: 136px; border-radius: 8px; padding: 6px 10px;
+    font-size: 14px; font-weight: 700; line-height: 1.3; white-space: nowrap;
+  }
+  .chip.in { border: 1.5px solid var(--brown); background: var(--card); color: var(--brown); }
+  .chip.out { background: var(--brown); color: #fff; }
+  .strip { width: 1010px; object-fit: cover; border-radius: 6px; display: block; }
+  .strip.base { height: 72px; }
+  .strip.styled { height: 63px; }
+</style>
+</head>
+<body>
+<div class="stage-wrap" id="wrap">
+  <div class="slide">
+    <!-- 标题区 -->
+    <div class="title-row">
+      <div class="title">多风格艺术长卷 · 全流程工作流</div>
+      <div class="subtitle">网络素材 → 底图拼接 → ComfyUI 风格化 → 拼接精修 → 风格化长卷</div>
+    </div>
+
+    <!-- 阶段列 -->
+    <div class="columns">
+      <!-- 01 -->
+      <div class="col col-200">
+        <div class="stage"><div class="stage-label">01 素材采集</div><div class="stage-bar"></div></div>
+        <div class="stack">
+          <div class="card"><div class="card-head"><span>选景规划</span></div>
+            <div class="card-body">浙大8校区、新西湖十景、宁波景点；按面积/年代/游览动线排布</div></div>
+          <div class="card"><div class="card-head"><span>网络搜图 + 抠图</span></div>
+            <div class="card-body">按经典机位搜集建筑与风景图，抠出主体</div></div>
+          <div class="pic"><img src="assets/material.jpg" alt="素材抠图"><div class="tag">素材抠图</div></div>
+        </div>
+      </div>
+
+      <div class="arrow"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1 L10 7 L1 13" fill="none" stroke="#5C3B22" stroke-width="2.4"/></svg></div>
+
+      <!-- 02 -->
+      <div class="col col-200">
+        <div class="stage"><div class="stage-label">02 底图预拼接</div><div class="stage-bar"></div></div>
+        <div class="stack">
+          <div class="card"><div class="card-head"><span>PS 预拼接</span></div>
+            <div class="card-body">在 Photoshop 中排定位置，对齐视角与地平线</div></div>
+          <div class="card"><div class="card-head"><span>接缝过渡</span></div>
+            <div class="card-body">仿制图章/模糊画笔初衔接；建筑遮挡过渡；WebUI 局部重绘补缝</div></div>
+          <div class="pic"><img src="assets/inpaint_mask.jpg" alt="局部重绘蒙版"><div class="tag">局部重绘蒙版</div></div>
+        </div>
+      </div>
+
+      <div class="arrow"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1 L10 7 L1 13" fill="none" stroke="#5C3B22" stroke-width="2.4"/></svg></div>
+
+      <!-- 03 ComfyUI -->
+      <div class="col col-500">
+        <div class="stage"><div class="stage-label">03 ComfyUI 风格化（风格学习 → CN控制 → 生成 → 精修）</div><div class="stage-bar core"></div></div>
+        <div class="sub-cols">
+          <div class="sub-col">
+            <div class="card"><div class="card-head"><span>WD14 反推提示词</span></div>
+              <div class="card-body">从风格参考图中提取提示词</div></div>
+            <div class="card"><div class="card-head"><span>IPAdapter 风格迁移</span></div>
+              <div class="card-body row">
+                <img class="thumb-ref" src="assets/style_ref.jpg" alt="风格参考图">
+                <div>SDXL 下迁移参考图的风格与构图</div>
+              </div></div>
+            <div class="card"><div class="card-head"><span>ControlNet 双控</span></div>
+              <div class="card-body col">
+                <div>深度 + 线稿双控，锁住建筑结构</div>
+                <div class="thumbs">
+                  <img src="assets/depth.jpg" alt="DepthAnything 深度图">
+                  <img src="assets/lineart.jpg" alt="LineArt 线稿">
+                </div>
+              </div></div>
+          </div>
+          <div class="sub-col">
+            <div class="card"><div class="card-head"><span>K采样器 &amp; VAE解码</span></div>
+              <div class="card-body">DreamShaper XL Turbo 初次出图</div></div>
+            <div class="card"><div class="card-head"><span>FLUX 精修</span></div>
+              <div class="card-body">UNET 去噪增强细节 → ESRGAN 超分高清</div></div>
+            <div class="card"><div class="card-head"><span>参数调整与排障</span></div>
+              <div class="card-body">采样步数 5–8 · 双 CN 控制<br>变形→加CN　风格弱→调权重<br>噪点→重抽卡 / 换参考图</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1 L10 7 L1 13" fill="none" stroke="#5C3B22" stroke-width="2.4"/></svg></div>
+
+      <!-- 04 -->
+      <div class="col col-200">
+        <div class="stage"><div class="stage-label">04 拼接精修</div><div class="stage-bar"></div></div>
+        <div class="stack">
+          <div class="card"><div class="card-head"><span>PS 衔接 + 局部重绘</span></div>
+            <div class="card-body">仿制图章/模糊画笔初衔接；同一 Lora 局部重绘接缝</div></div>
+          <div class="card"><div class="card-head"><span>单独生成 + 人工PS</span></div>
+            <div class="card-body">修复风格化后脱离特征的局部</div></div>
+          <div class="pic"><img src="assets/inpaint.jpg" alt="接缝重绘"><div class="tag">接缝重绘</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部长卷对比带 -->
+    <div class="compare">
+      <div class="compare-row">
+        <div class="chip in">输入 · PS 拼接底图</div>
+        <img class="strip base" src="assets/base_strip.jpg" alt="PS 拼接底图">
+      </div>
+      <div class="compare-row">
+        <div class="chip out">输出 · 风格化长卷</div>
+        <img class="strip styled" src="assets/styled_strip.jpg" alt="风格化长卷 · 唯美冬日">
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // 等比缩放以适配窗口，保持 1280×720 画布比例
+  function fit() {
+    const s = Math.min(window.innerWidth / 1320, window.innerHeight / 760);
+    document.getElementById('wrap').style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+</script>
+</body>
+</html>
