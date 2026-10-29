@@ -19,7 +19,7 @@ const PROJECTS = {
   next:'先补真实模型分层评测与经同意的小范围试用，再决定扩大流量。不会把回复率或和好率当作必须追求的增长目标。'
  },
  wardrobe: {
-  name:'衣柜设计师', en:'WARDROBE DESIGNER', color:'sage', tagline:'把“怎么收纳”，变成能沟通的方案。', brief:'从搬家的真实需求出发，连接衣柜布局、厂家沟通与配件选购。', tags:['规则推荐','可视化编辑','电商决策'], image:'wardrobe-edit.png', url:'https://wardrobe-designer-iota.vercel.app/',
+  name:'衣柜设计师', en:'WARDROBE DESIGNER', color:'sage', tagline:'把“怎么收纳”，变成能沟通的方案。', brief:'一款个性化衣柜设计工具，帮助用户快速设计出符合其个性化储物需求的衣柜布局，一键生成厂家沟通方案，打通用户从模糊想法到具体方案的流程', tags:['规则推荐','可视化编辑','电商决策'], image:'wardrobe-edit.png', url:'https://wardrobe-designer-iota.vercel.app/',
   intro:'在联系厂家之前，先输入房间与衣物需求，比较起步布局，自主调整分区，再导出沟通图纸并核对配件清单。它把模糊的生活习惯，变成一份可以讨论的衣柜方案。',
   meta:[['我的角色','需求分析 / 产品流程 / 交互 / Vibe Coding'],['项目状态','纯前端版本已部署'],['验证范围','规则与交互检查；尚无商家转化实测']],
   storyTitle:'搬家时，我想先把自己的衣柜想明白',
