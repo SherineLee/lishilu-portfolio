@@ -27,3 +27,9 @@
 `npm run build` 与 `npm test`。配置后在正式首页测试实习、研究和兴趣问题，并针对知识库没有记录的内容测试未知回答。确认更新飞书后五分钟内可读取新资料。
 
 [DeepSeek鉴权](https://api-docs.deepseek.com/) · [飞书文档纯文本 API](https://open.feishu.cn/document/server-docs/docs/docs/docx-v1/document/raw_content) · [Vercel Node.js 函数](https://vercel.com/docs/functions/runtimes/node-js)
+
+## 分身语气与补充资料（2026-10-29）
+
+`api/knowledge/shilu.md` 是用户个人信息 Markdown 的职业与兴趣摘录。已排除基本身份表、证件、电话、邮箱、详细地址、紧急联系人与待核对字段，保留服务端，随函数打包，不进入 dist。补充内容和飞书一起检索，补充事实优先。原始私人文件不提交。
+
+`api/answer-policy.cjs` 控制简短、温暖、俏皮的第一人称表达。具体项目指标问题直接转向方法讨论；模型输出经过来源措辞、数字及长度检查，不通过则使用自然转场句。无匹配也用自然转场，不编造个人事实。输出检查是保守规则，不能视为所有隐晦泄露的绝对保证。
