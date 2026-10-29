@@ -1,1 +1,12 @@
-{"version":1,"revision":"initial","patches":{}}
+{
+  "version": 1,
+  "revision": "66a7640d-b702-4a84-b578-b5d49e595f83",
+  "updatedAt": "2026-10-29T15:49:42.387Z",
+  "patches": {
+    "home": {
+      "main > section:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > img:nth-of-type(1)": {
+        "image": "assets/published/f72614d49001b18e5702cb3da31f31af680bf759e466954c844816d2525e386b.png"
+      }
+    }
+  }
+}
