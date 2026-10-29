@@ -9,6 +9,10 @@ try{const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'ap
 catch(error){if(current!==session)return;status.textContent=error.name==='AbortError'?'这次查询耗时较长，请稍后重试。':error.message;input.value=question;}
 finally{clearTimeout(timer);if(current===session){busy=false;input.disabled=false;button.disabled=false;document.querySelectorAll('[data-avatar-question]').forEach(b=>b.disabled=false);input.focus({preventScroll:true});}}}
 document.addEventListener('submit',e=>{if(e.target.id!=='avatar-form')return;e.preventDefault();send(document.querySelector('#avatar-input').value.trim());});
-document.addEventListener('click',e=>{const b=e.target.closest('[data-avatar-question]');if(b)send(b.dataset.avatarQuestion);});
+document.addEventListener('click',e=>{if(e.target.closest('[data-self-chat]')){const input=document.querySelector('#avatar-input');input?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'center'});input?.focus({preventScroll:true});return;}const b=e.target.closest('[data-avatar-question]');if(b)send(b.dataset.avatarQuestion);});
 document.addEventListener('keydown',e=>{if(e.target.id==='avatar-input'&&e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();e.target.form.requestSubmit();}});
 })();
+
+// A small pointer response; no simulated model connectivity or biometric claims.
+document.addEventListener('pointermove',e=>{const stage=e.target.closest('.self-character');if(!stage||e.pointerType==='touch'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=stage.getBoundingClientRect();stage.style.setProperty('--self-x',((e.clientX-r.left)/r.width-.5)*10+'px');stage.style.setProperty('--self-y',((e.clientY-r.top)/r.height-.5)*6+'px');});
+document.addEventListener('pointerout',e=>{const stage=e.target.closest('.self-character');if(stage&&!stage.contains(e.relatedTarget)){stage.style.setProperty('--self-x','0px');stage.style.setProperty('--self-y','0px');}});

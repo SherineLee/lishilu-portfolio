@@ -1,18 +1,8 @@
-# 我的分身：豆包 + 飞书文档
+# 我的分身：DeepSeek + 飞书文档
 
 ## Production 配置
 
-在 [Vercel 环境变量](https://vercel.com/sheri-ne/lishilu-portfolio/settings/environment-variables) 中添加下列变量，环境选择 Production。密钥设为 Secret，不写进网页或 Git。保存后需要重新部署才会生效。
-
-| 名称 | 内容 |
-|---|---|
-| ARK_API_KEY | 火山方舟 API Key |
-| ARK_MODEL | 账号已开通的豆包 Model ID 或推理接入点 ID；不能填写模型的中文展示名 |
-| FEISHU_APP_ID | 飞书自建应用 App ID |
-| FEISHU_APP_SECRET | 对应应用 App Secret |
-| FEISHU_DOCUMENT_ID | 可选，默认使用本次指定文档 |
-
-豆包使用方舟数据面 Chat API，非 Coding Plan 接口。北京区域地址固定为 `https://ark.cn-beijing.volces.com/api/v3/chat/completions`。
+在 Vercel Production 添加 DEEPSEEK_API_KEY（兼容已放在 ARK_API_KEY 中的 DeepSeek 密钥）、FEISHU_APP_ID、FEISHU_APP_SECRET。DEEPSEEK_MODEL 可选，默认 deepseek-flash。使用 https://api.deepseek.com/chat/completions，关闭深度思考以降低响应耗时。保存后需重新部署生效。密钥不写入网页或 Git。
 
 ## 飞书授权
 
@@ -22,7 +12,7 @@
 
 ## 实现及边界
 
-前端 `dist/avatar-chat.js` → 同源 POST `/api/chat` → 飞书应用凭证获取 tenant token → 读取文档纯文本 → 中文双字与英文关键词匹配选取片段 → 豆包回答。
+前端 `dist/avatar-chat.js` → 同源 POST `/api/chat` → 飞书应用凭证获取 tenant token → 读取文档纯文本 → 中文双字与英文关键词匹配选取片段 → DeepSeek回答。
 
 原文仅留在服务端实例内，缓存五分钟，不存入公开素材。浏览器仅接收回答，不接收原文或密钥。对话仅保存在当前页面内存，不写入飞书，也不持久化访客问题。模型提示词要求依据资料、识别未知与模拟内容、不回答隐私或企业内部信息；这不是独立的内容审核系统。
 
@@ -36,4 +26,4 @@
 
 `npm run build` 与 `npm test`。配置后在正式首页测试实习、研究和兴趣问题，并针对知识库没有记录的内容测试未知回答。确认更新飞书后五分钟内可读取新资料。
 
-[豆包鉴权](https://docs.volcengine.com/docs/ark/base-url-and-authentication?lang=en) · [飞书文档纯文本 API](https://open.feishu.cn/document/server-docs/docs/docs/docx-v1/document/raw_content) · [Vercel Node.js 函数](https://vercel.com/docs/functions/runtimes/node-js)
+[DeepSeek鉴权](https://api-docs.deepseek.com/) · [飞书文档纯文本 API](https://open.feishu.cn/document/server-docs/docs/docs/docx-v1/document/raw_content) · [Vercel Node.js 函数](https://vercel.com/docs/functions/runtimes/node-js)
