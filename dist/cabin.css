@@ -145,3 +145,6 @@ body.cabin-on > *:not(#cabin) { display: none !important; }
 #cabin #cb-back,#cabin #cb-skip{pointer-events:none;width:max-content;max-width:calc(100vw - 32px)}
 #cabin #cb-back{right:auto}
 #cabin #cb-back.show,#cabin #cb-skip.show{pointer-events:auto;z-index:70}
+/* Keep horizontal centering when the shared pill reveal animation becomes visible. */
+#cabin #cb-hint,#cabin #cb-hallhint{left:50%;right:auto;margin-left:0;transform:translate(-50%,8px);width:max-content;box-sizing:border-box;max-width:calc(100vw - 32px);text-align:center}
+#cabin #cb-hint.show,#cabin #cb-hallhint.show{transform:translate(-50%,0)}

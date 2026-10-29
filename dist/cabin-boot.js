@@ -9,7 +9,7 @@
   function ensureCss() {
     if (document.getElementById('cb-css')) return;
     var link = document.createElement('link');
-    link.id = 'cb-css'; link.rel = 'stylesheet'; link.href = 'cabin.css?v=controls-2';
+    link.id = 'cb-css'; link.rel = 'stylesheet'; link.href = 'cabin.css?v=controls-3';
     document.head.appendChild(link);
   }
 
