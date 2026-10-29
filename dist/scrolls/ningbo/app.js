@@ -40,5 +40,10 @@ $('full').onclick=async()=>{try{if(document.fullscreenElement)await document.exi
 document.addEventListener('fullscreenchange',()=>{$('full').textContent=document.fullscreenElement?'退出全屏 ⛶':'全屏赏画 ⛶';});
 image.onload=()=>{state.ready=true;readyTime=performance.now();$('loading').hidden=true;resize();paint(0);ui();};image.onerror=()=>{$('loading').textContent='画卷未能载入，请检查 assets/scroll.png 后刷新。';};image.src='assets/scroll.png';requestAnimationFrame(frame);
 
-const music=new Audio('assets/yudabajiao.ogg');music.loop=true;music.volume=.42;const musicButton=$('music');musicButton.onclick=async()=>{if(music.paused){try{await music.play();musicButton.textContent='♫ 关闭音乐';musicButton.setAttribute('aria-pressed','true');}catch(error){musicButton.textContent='音乐加载失败';musicButton.setAttribute('aria-pressed','false');}}else{music.pause();musicButton.textContent='♫ 开启音乐';musicButton.setAttribute('aria-pressed','false');}};
+const music=new Audio('assets/yudabajiao.ogg');music.loop=true;music.volume=.42;const musicButton=$('music');let musicWanted=true;
+async function startMusic(){if(!musicWanted||!music.paused)return;try{await music.play();musicButton.textContent='♫ 关闭音乐';musicButton.setAttribute('aria-pressed','true');}catch{musicButton.textContent='♫ 点击开启音乐';musicButton.setAttribute('aria-pressed','false');}}
+musicButton.onclick=()=>{musicWanted=music.paused;if(musicWanted)startMusic();else{music.pause();musicButton.textContent='♫ 开启音乐';musicButton.setAttribute('aria-pressed','false');}};
+startMusic();
+for(const event of ['pointerdown','keydown'])document.addEventListener(event,e=>{if(e.target.closest?.('#music'))return;startMusic();});
+
 })();

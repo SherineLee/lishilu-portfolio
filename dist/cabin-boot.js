@@ -42,13 +42,7 @@
     });
     document.body.appendChild(btn);
     document.body.classList.add('has-cabin-btn');
-    // 滚到页脚时让位，避免压住页脚内容
-    var footer = document.querySelector('footer');
-    if (footer && window.IntersectionObserver) {
-      new window.IntersectionObserver(function (entries) {
-        btn.classList.toggle('cr-tuck', !!entries[0] && entries[0].isIntersecting);
-      }).observe(footer);
-    }
+
   }
 
   function boot() {
