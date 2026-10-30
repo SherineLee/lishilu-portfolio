@@ -1,3 +1,19 @@
+# 当前正式部署：Netlify（2026-10-30）
+
+用户已将正式网站迁移为 Netlify 全端部署。
+- 网站：https://shilu-product-scene.netlify.app/
+- 项目介绍：https://shilu-product-scene.netlify.app/#commerce
+- 工具：https://shilu-product-scene.netlify.app/wuying/demo/
+- Netlify 项目 ID：530a4c0e-bf41-4644-8497-89530488f928
+- 前端 dist/；接口 netlify/functions/commerce.cjs 复用 api/commerce.js。
+- 服务端环境变量：DASHSCOPE_API_KEY、COMMERCE_IMAGE_MODEL、COMMERCE_VISION_MODEL。不得写入前端或 Git。
+- npm run build 与 npm test 后，以 Netlify CLI 执行 netlify deploy --prod --no-build；需已登录并关联上述项目。
+- 当前为 CLI 部署；Git 推送不代表 Netlify 自动发布成功，必须单独部署与验收。
+- GitHub/Vercel 为历史入口，后续验收以 Netlify 为准。
+
+---
+以下保留历史部署记录：
+
 # 部署与更新
 
 - 正式网站：https://lishilu-portfolio.vercel.app/
