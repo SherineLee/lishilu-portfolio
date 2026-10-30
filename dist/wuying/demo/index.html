@@ -11,7 +11,7 @@
 </head>
 <body>
   <header>
-    <div class="brand"><span class="mark">物</span>商品场景图改稿助手 <span class="brand-sub">小物件商品图助手</span></div>
+    <div class="brand"><span class="mark">图</span>商品场景图改稿助手 <span class="brand-sub">小物件商品图助手</span></div>
     <div class="header-right"><a class="demo-back" href="../../#commerce">返回项目介绍</a></div>
   </header>
 
@@ -71,7 +71,7 @@
 
         <section class="settings-section">
           <div><h2>画面比例</h2><div class="seg" id="ratios"><button class="selected" data-ratio="3:4">竖版 3:4</button><button data-ratio="1:1">方形 1:1</button><button data-ratio="4:3">横版 4:3</button></div></div>
-          <div><label>自定义尺寸（像素）</label><div class="seg"><input id="widthInput" type="number" min="256" max="4096" value="768" aria-label="宽度"><input id="heightInput" type="number" min="256" max="4096" value="1024" aria-label="高度"></div></div><div><label for="titleInput"><h2>画面标题 <span class="small">选填</span></h2></label><input id="titleInput" maxlength="24" placeholder="例如：把月光戴在身上" aria-label="画面标题"></div>
+          <div><label>自定义尺寸（像素）</label><div class="seg"><input id="widthInput" type="number" min="512" max="2048" value="768" aria-label="宽度"><input id="heightInput" type="number" min="512" max="2048" value="1024" aria-label="高度"></div></div><div><label for="titleInput"><h2>画面标题 <span class="small">选填</span></h2></label><input id="titleInput" maxlength="24" placeholder="例如：把月光戴在身上" aria-label="画面标题"></div>
         <div><label for="subtitleInput">副标题（选填）</label><input id="subtitleInput" maxlength="60" placeholder="补充一句商品介绍"></div></section>
 
         <section class="form-actions">
@@ -83,7 +83,7 @@
     </aside>
 
     <section class="panel center">
-      <div class="canvas-head">
+      <button id="backToSetup" class="quiet">返回上传与设置</button><div class="canvas-head">
         <div><h1 id="projectTitle">先放入你的商品</h1><p class="small" id="canvasHint">查看画面，继续调整。</p></div>
         <button id="originalBtn" disabled>查看原图</button>
       </div>
@@ -134,6 +134,6 @@
     </aside>
   </main>
 
-  <dialog id="maskDialog"><h2>涂抹需要保留的商品区域</h2><p>拖动涂抹，关闭后可继续操作。</p><canvas id="maskCanvas" width="600" height="600"></canvas><button id="saveMask">保存并关闭</button><button onclick="this.closest('dialog').close()">关闭</button></dialog><div id="toast" class="toast" role="status"></div>
+  <dialog id="maskDialog"><h2>涂抹需要保留的商品区域</h2><p>涂抹需要保留的商品区域，其余区域将移除。关闭弹窗可取消。</p><label>画笔大小 <input id="brushSize" type="range" min="2" max="60" value="16"></label><canvas id="maskCanvas" width="600" height="600"></canvas><button id="saveMask">保存并关闭</button><button onclick="this.closest('dialog').close()">关闭</button></dialog><div id="toast" class="toast" role="status"></div>
 </body>
 </html>

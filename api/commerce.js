@@ -1,0 +1,16 @@
+'use strict';
+const limits=new Map();
+module.exports=async(req,res)=>{
+ res.setHeader('Cache-Control','no-store');if(req.headers.origin==='https://sherinelee.github.io'){res.setHeader('Access-Control-Allow-Origin',req.headers.origin);res.setHeader('Vary','Origin');res.setHeader('Access-Control-Allow-Headers','Content-Type');res.setHeader('Access-Control-Allow-Methods','GET,POST,OPTIONS');}if(req.method==='OPTIONS')return res.status(204).end();if(req.method==='GET')return res.json({configured:!!process.env.DASHSCOPE_API_KEY});
+ if(req.method!=='POST')return res.status(405).json({error:'请求方式不支持'});
+ if(req.headers.origin!=='https://lishilu-portfolio.vercel.app'&&req.headers.origin!=='https://sherinelee.github.io'&&!/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(req.headers.origin||''))return res.status(403).json({error:'请从作品集发起操作'});
+ const key=process.env.DASHSCOPE_API_KEY;if(!key)return res.status(503).json({error:'图片服务正在配置中，当前可使用体验示例。'});
+ try{const b=typeof req.body==='string'?JSON.parse(req.body):req.body;if(!b||!['analyze','retouch','generate','revise','check'].includes(b.action))throw Error('操作无效');
+ const ip=String(req.headers['x-forwarded-for']||'visitor').split(',')[0],now=Date.now(),old=limits.get(ip)||{n:0,t:now};if(now-old.t>60000){old.n=0;old.t=now;}if(++old.n>8)return res.status(429).json({error:'操作较频繁，请一分钟后重试'});limits.set(ip,old);for(const[k,v]of limits)if(now-v.t>60000)limits.delete(k);
+ const images=(b.images||[]).slice(0,3);if(images.some(x=>typeof x!=='string'||!/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(x)||x.length>1500000))throw Error('图片格式或大小不符合要求，请重新上传');
+ const vision=['analyze','check'].includes(b.action);const prompt=b.action==='analyze'?'用简洁中文提取此图的场景、配色、材质、光照、构图。只返回可直接用于商品场景图生成的描述，不描述参考图中的商品。':b.action==='check'?'对比两图商品的颜色、轮廓、文字、纹样是否变化，简洁列出需人工核对的差异，不保证一致。':b.action==='retouch'?'将图片中的商品精修为纯白背景商品实拍图，去除手部及杂物，保留完整商品。轻微改善光影、白平衡，不改变商品轮廓、文字、Logo、纹样、材质与颜色。':String(b.prompt||'将第一张图中的商品放置在简洁自然光桌面场景中，保留商品所有细节。').slice(0,2500);
+ const width=Math.max(512,Math.min(2048,Math.round((Number(b.width)||768)/16)*16)),height=Math.max(512,Math.min(2048,Math.round((Number(b.height)||1024)/16)*16));
+ const response=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:vision?(process.env.COMMERCE_VISION_MODEL||'qwen3-vl-plus'):(process.env.COMMERCE_IMAGE_MODEL||'qwen-image-2.0'),input:{messages:[{role:'user',content:[...images.map(image=>({image})),{text:prompt}]}]},parameters:vision?{max_tokens:500}:{n:1,size:`${width}*${height}`,prompt_extend:false,watermark:true}}),signal:AbortSignal.timeout(52000)});
+ const data=await response.json();if(!response.ok||data.code)return res.status(502).json({error:'图片服务暂时未完成请求，请稍后重试。',requestId:data.request_id});const content=data.output?.choices?.[0]?.message?.content||[];return res.json({text:content.filter(x=>x.text).map(x=>x.text).join('\n'),image:content.find(x=>x.image)?.image||null});
+ }catch(e){return res.status(400).json({error:e.name==='TimeoutError'?'处理超时，请稍后重试':e.message==='操作无效'||e.message.startsWith('图片格式')?e.message:'处理失败，请重试或换一张清晰图片'});}
+};

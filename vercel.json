@@ -37,6 +37,9 @@
     },
     "api/editor/pdf.js": {
       "maxDuration": 60
+    },
+    "api/commerce.js": {
+      "maxDuration": 60
     }
   }
 }

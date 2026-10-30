@@ -52,7 +52,7 @@ test('公开体验页初始为空白待输入态，点体验示例才载入示�
   assert.match(html, /体验示例/);
   assert.match(html, /class="workspace is-setup"/);
   assert.match(html, /demo-entry/);
-  assert.match(html, /download="物映-发圈场景示例\.webp"/);
-  assert.match(js, /体验示例：精修与成片使用预置结果|预置结果/);
+  assert.match(html, /download="商品场景图改稿助手-发圈场景示例\.webp"/);
+  assert.match(js, /预置成片|预置图片/);
   assert.doesNotMatch(html + js, /localhost|127\.0\.0\.1|项目内容即将更新/);
 });
