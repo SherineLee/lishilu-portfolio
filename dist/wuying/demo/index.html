@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="物映发圈交互示例：查看商品精修、风格参考、场景成片和改稿流程。">
+  <meta name="description" content="保留真实商品，生成背景并通过看图选择完成改稿。">
   <meta name="theme-color" content="#f2f4f7">
-  <title>物映 · 发圈交互示例</title>
+  <title>物映 · 小物件商品图助手</title>
   <link rel="stylesheet" href="demo.css">
   <script src="demo.js" defer></script>
 </head>
@@ -14,42 +14,126 @@
     <div class="brand"><span class="mark">物</span>物映 <span class="brand-sub">小物件商品图助手</span></div>
     <div class="header-right"><a class="demo-back" href="../../#commerce">返回案例 ↗</a></div>
   </header>
+
   <nav class="steps" aria-label="制作进度">
     <div class="step active"><b>1</b>上传商品</div>
     <div class="step"><b>2</b>精修确认</div>
     <div class="step"><b>3</b>生成场景</div>
     <div class="step"><b>4</b>调整导出</div>
   </nav>
-  <main id="workspace" class="workspace">
-    <div class="demo-heading">
-      <h1>用一只格纹发圈，走一遍改稿流程。</h1>
-      <p>使用预置图片，不上传、不调用生图。可以逐步查看，并下载示例成片。</p>
-    </div>
-    <section class="demo-body">
-      <aside class="panel demo-panel" aria-live="polite">
-        <span class="demo-count" id="demo-count">01 / 04</span>
-        <h2 id="demo-title">从一张随手拍开始</h2>
-        <p id="demo-copy">原图会保留。后续精修如果不像原来的商品，可以随时退回来。</p>
-        <div class="demo-detail" id="demo-detail"><span>检查重点</span><p>格纹、颜色、轮廓</p></div>
-        <div class="demo-revise" id="demo-revise" hidden>
-          <span>选择一条修改说明</span>
-          <button data-revise="减少桌面道具，保留发圈位置与纹样。">背景再干净一点</button>
-          <button data-revise="提高商品与背景的明暗对比，不改变商品主色。">商品再突出一点</button>
-          <p id="demo-revise-copy">选择后可查看具体修改说明；公开示例不会生成新图片。</p>
+
+  <main id="workspace" class="workspace is-setup">
+    <aside class="panel left">
+      <div class="setup-heading">
+        <h1>给小物件，拍一张好看的商品图</h1>
+        <p>从随手拍到精修，再到你喜欢的场景。</p>
+      </div>
+
+      <section class="demo-entry">
+        <img src="../assets/original.webp" alt="体验示例：随手拍的格纹发圈">
+        <div>
+          <h2>没有合适的图片？</h2>
+          <p>用这只格纹发圈，走一遍完整流程。</p>
         </div>
-        <div class="demo-actions">
-          <button class="primary demo-next" id="demo-next">查看精修示例 →</button>
-          <a class="demo-download" id="demo-download" href="../assets/result.webp" download="物映-发圈场景示例.webp" hidden>下载示例图 ↓</a>
+        <button id="demoBtn">体验示例</button>
+      </section>
+
+      <div id="demoNotice" class="demo-notice hidden">体验示例：精修与成片使用预置结果，你可以逐步查看，也可以上传自己的图片。</div>
+
+      <div class="pad setup-grid">
+        <section class="product-section">
+          <div class="label"><h2>商品图片</h2><span id="cutoutStatus" class="status">等待上传</span></div>
+          <button id="uploadBtn" class="image-upload">
+            <span id="thumb" class="thumb"><span class="upload-placeholder"><span class="upload-plus">＋</span>上传商品图片</span></span>
+          </button>
+          <div class="file"><small id="filename">PNG 或 JPEG</small><button id="originalSetup" class="quiet" disabled>查看原图</button></div>
+          <div class="retouch-actions"><button id="retouchBtn" class="primary wide" disabled>精修商品</button></div>
+          <div id="retouchPanel" class="retouch-panel hidden">
+            <div class="label"><h3>精修预览</h3><button id="compareRetouch" class="quiet">放大对比</button></div>
+            <img id="retouchedPreview" alt="商品精修结果">
+            <p>核对颜色、纹样和文字，再决定是否使用。</p>
+            <div class="seg"><button id="acceptRetouch" class="primary">使用精修图</button><button id="keepOriginal">保留原图</button></div>
+          </div>
+          <label class="confirm-row"><input id="confirmMask" type="checkbox">商品边缘完整，没有缺失</label>
+          <button id="confirmBtn" class="wide" disabled>确认商品</button>
+        </section>
+
+        <section class="ref-section">
+          <div class="label"><h2>风格参考图</h2><span class="small" id="refState">上传后自动识别</span></div>
+          <button id="refBtn" class="image-upload">
+            <span id="refPreview" class="reference-preview"><span class="upload-placeholder"><span class="upload-plus">＋</span>上传喜欢的图片</span></span>
+          </button>
+          <div class="file"><small id="refName">参考图片的配色、材质和场景</small><button id="analyzeBtn" class="quiet" disabled>重新识别</button></div>
+          <div id="analysis" class="style-summary" aria-live="polite"></div>
+          <label class="field-label" for="background">画面描述</label>
+          <textarea id="background" placeholder="上传参考图后自动填写，也可以补充你的想法"></textarea>
+        </section>
+
+        <section class="settings-section">
+          <div><h2>画面比例</h2><div class="seg" id="ratios"><button class="selected" data-ratio="3:4">竖版 3:4</button><button data-ratio="1:1">方形 1:1</button></div></div>
+          <div><label for="titleInput"><h2>画面标题 <span class="small">选填</span></h2></label><input id="titleInput" maxlength="24" placeholder="例如：把月光戴在身上" aria-label="画面标题"></div>
+        </section>
+
+        <section class="form-actions">
+          <div class="job hidden" id="jobStatus" role="status" aria-live="polite"></div>
+          <button id="generate" class="primary wide" disabled>生成宣传图</button>
+          <p id="formHint" class="small">上传两张图片，确认商品后即可生成。</p>
+        </section>
+      </div>
+    </aside>
+
+    <section class="panel center">
+      <div class="canvas-head">
+        <div><h1 id="projectTitle">先放入你的商品</h1><p class="small" id="canvasHint">查看画面，继续调整。</p></div>
+        <button id="originalBtn" disabled>查看原图</button>
+      </div>
+      <div class="art-area">
+        <div id="art" class="art">
+          <div id="emptyArt" class="empty-art"><h2>从一张清晰商品图开始</h2><p class="small">生成后在这里查看效果。</p></div>
+          <img id="result" class="result hidden" alt="商品场景合成结果">
+          <div id="artTitle" class="art-title"></div>
         </div>
-      </aside>
-      <div class="canvas">
-        <div class="canvas-frame">
-          <img id="demo-image" src="../assets/original.webp" alt="手持格纹发圈的原始照片">
-          <span class="demo-image-label" id="demo-image-label">原始照片</span>
-        </div>
+        <p id="caption" class="caption"></p>
+      </div>
+      <div class="canvas-bottom">
+        <div id="versions" class="versions"><small>生成后可查看版本</small></div>
+        <button id="selectRegion" disabled>圈选背景区域</button>
       </div>
     </section>
-    <p class="demo-footnote">精修与成片为预置素材；完整原型中的真实生成能力不在这个静态示例内运行。</p>
+
+    <aside class="panel right">
+      <div class="pad stack">
+        <section><h2>哪里想调整？</h2><p class="small" style="margin-top:8px">选择问题，或直接描述你的感受。</p>
+          <div class="options" id="options">
+            <button data-edit="减少道具、简化背景纹理，保持布局">背景太杂<span>少一点道具</span></button>
+            <button data-edit="拉开背景与商品的明暗差异，不添加其他首饰">商品不突出<span>调整背景对比</span></button>
+            <button data-edit="使用更柔和的背景光照和低对比色彩">想更柔和<span>降低背景反差</span></button>
+            <button data-edit="清空画面上方四分之一的道具，提供干净标题留白">留白不够<span>空出标题位置</span></button>
+          </div>
+        </section>
+        <section><label for="feedback"><h3 style="margin-bottom:8px">也可以直接说</h3></label>
+          <textarea id="feedback" placeholder="例如：有点冷，想更温暖，但不要改商品颜色"></textarea>
+          <button id="interpretBtn" class="wide" disabled>AI 帮我说明白</button>
+        </section>
+        <section class="summary"><h3>这次会修改</h3><p id="editSummary">选择一个调整方向。</p><p class="small">商品保持不变，只调整背景。</p></section>
+        <button id="revise" class="primary wide" disabled>确认调整</button>
+      </div>
+      <div class="pad" style="background:#fafbfd">
+        <h2>导出前，检查一下商品</h2>
+        <button id="checkBtn" class="wide" style="margin-top:12px" disabled>AI 辅助检查</button>
+        <div id="checkResult" class="ai-result"></div>
+        <p class="small" style="margin-top:8px">请对照原图，检查商品细节。</p>
+        <div class="checks">
+          <label><input type="checkbox" data-check="0">文字、纹样与原图一致</label>
+          <label><input type="checkbox" data-check="1">商品边缘完整，没有缺失</label>
+          <label><input type="checkbox" data-check="2">画面和标题符合我的要求</label>
+        </div>
+        <a id="exportBtn" class="wide primary" style="margin-top:24px" href="../assets/result.webp" download="物映-发圈场景示例.webp">下载图片</a>
+        <p class="small" id="checksHint">完成三项检查后可下载。</p>
+      </div>
+    </aside>
   </main>
+
+  <div id="toast" class="toast" role="status"></div>
 </body>
 </html>

@@ -46,9 +46,13 @@ test('物映本地图片与体验页资源都存在', () => {
   }
 });
 
-test('公开体验页明确说明不调用生图并提供示例下载', () => {
+test('公开体验页初始为空白待输入态，点体验示例才载入示例，并明确预置边界', () => {
   const html = read('dist/wuying/demo/index.html');
-  assert.match(html, /不上传、不调用生图/);
+  const js = read('dist/wuying/demo/demo.js');
+  assert.match(html, /体验示例/);
+  assert.match(html, /class="workspace is-setup"/);
+  assert.match(html, /demo-entry/);
   assert.match(html, /download="物映-发圈场景示例\.webp"/);
-  assert.match(html, /精修与成片为预置素材/);
+  assert.match(js, /体验示例：精修与成片使用预置结果|预置结果/);
+  assert.doesNotMatch(html + js, /localhost|127\.0\.0\.1|项目内容即将更新/);
 });

@@ -93,7 +93,7 @@ function commerceCase() {
   return `<article class="wy-case" aria-labelledby="wy-title">
     <div class="page-heading">
       <div>
-        <h1 id="wy-title">物映</h1>
+        <h1 id="wy-title">商品场景图改稿助手</h1>
         <p>小物件商品图改稿助手——从一张随手拍开始，先确认商品没被改坏，再生成场景、逐版调整。</p>
       </div>
       <a class="button primary" href="wuying/demo/?demo=1" target="_blank" rel="noopener">体验示例 ↗</a>
