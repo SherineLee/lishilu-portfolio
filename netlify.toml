@@ -1,0 +1,9 @@
+[build]
+  publish = "dist"
+  functions = "netlify/functions"
+[functions]
+  node_bundler = "esbuild"
+[[redirects]]
+  from = "/api/commerce"
+  to = "/.netlify/functions/commerce"
+  status = 200
