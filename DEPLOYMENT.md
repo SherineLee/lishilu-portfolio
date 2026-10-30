@@ -1,9 +1,19 @@
+# 正式入口更新（2026-10-30）
+
+作品集：https://lishilu-portfolio.netlify.app/ ，项目介绍 #commerce。
+独立工具：https://product-scene-assistant.netlify.app/ 。
+独立源码：https://github.com/SherineLee/product-scene-assistant （私有）。
+工具站点 ID：2d8cc028-b648-4def-badf-e85462053053。
+作品集保留原 site ID 530a4c0e-bf41-4644-8497-89530488f928，已重命名域名。
+工具独立发布，百炼配置只在服务端；作品集旧工具路径跳转新工具。
+
+---
 # 当前正式部署：Netlify（2026-10-30）
 
 用户已将正式网站迁移为 Netlify 全端部署。
-- 网站：https://shilu-product-scene.netlify.app/
-- 项目介绍：https://shilu-product-scene.netlify.app/#commerce
-- 工具：https://shilu-product-scene.netlify.app/wuying/demo/
+- 网站：https://lishilu-portfolio.netlify.app/
+- 项目介绍：https://lishilu-portfolio.netlify.app/#commerce
+- 工具：https://lishilu-portfolio.netlify.app/wuying/demo/
 - Netlify 项目 ID：530a4c0e-bf41-4644-8497-89530488f928
 - 前端 dist/；接口 netlify/functions/commerce.cjs 复用 api/commerce.js。
 - 服务端环境变量：DASHSCOPE_API_KEY、COMMERCE_IMAGE_MODEL、COMMERCE_VISION_MODEL。不得写入前端或 Git。

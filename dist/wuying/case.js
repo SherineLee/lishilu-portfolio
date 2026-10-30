@@ -96,7 +96,7 @@ function commerceCase() {
         <h1 id="wy-title">商品场景图改稿助手</h1>
         <p>小物件商品图改稿助手——从一张随手拍开始，先确认商品没被改坏，再生成场景、逐版调整。</p>
       </div>
-      <a class="button primary" href="wuying/demo/?demo=1" target="_blank" rel="noopener">体验示例 ↗</a>
+      <a class="button primary" href="https://product-scene-assistant.netlify.app/" target="_blank" rel="noopener">功能体验 ↗</a>
     </div>
 
     <section class="wy-brief" aria-label="项目概览">
@@ -220,7 +220,7 @@ function commerceCase() {
 
     <div class="case-next">
       <a href="#design">← 返回项目展示</a>
-      <a class="button primary" href="wuying/demo/?demo=1" target="_blank" rel="noopener">打开发圈示例 ↗</a>
+      <a class="button primary" href="https://product-scene-assistant.netlify.app/" target="_blank" rel="noopener">功能体验 ↗</a>
     </div>
   </article>`;
 }

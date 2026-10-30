@@ -6,7 +6,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('commerce 路由渲染物映案例并初始化交互', () => {
+test('commerce 路由渲染商品场景图改稿助手案例并初始化交互', () => {
   const app = read('dist/app.js');
   const html = read('dist/index.html');
   assert.match(app, /commerce:commerceComing/);
@@ -18,7 +18,7 @@ test('commerce 路由渲染物映案例并初始化交互', () => {
 test('案例与体验入口不使用本机地址或占位页', () => {
   const source = read('dist/wuying/case.js') + read('dist/wuying/demo/index.html');
   assert.doesNotMatch(source, /localhost|127\.0\.0\.1|项目内容即将更新/);
-  assert.match(source, /wuying\/demo\/\?demo=1/);
+  assert.match(source, /https:\/\/product-scene-assistant\.netlify\.app\//);
 });
 
 test('案例页保留开场概览卡、竖排章节导航与融合生成步骤', () => {
@@ -37,22 +37,15 @@ test('案例页不再包含旁白式标注', () => {
   assert.doesNotMatch(source, /预置素材|已分别跑通|仍待验证|真实商家访谈/);
 });
 
-test('物映本地图片与体验页资源都存在', () => {
+test('商品场景图改稿助手本地图片与体验页资源都存在', () => {
   for (const name of ['original', 'refined', 'reference', 'result']) {
     assert.ok(fs.statSync(path.join(root, 'dist/wuying/assets', `${name}.webp`)).size > 1000);
   }
-  for (const file of ['demo.css', 'demo.js']) {
-    assert.ok(fs.existsSync(path.join(root, 'dist/wuying/demo', file)));
-  }
 });
 
-test('公开体验页初始为空白待输入态，点体验示例才载入示例，并明确预置边界', () => {
-  const html = read('dist/wuying/demo/index.html');
-  const js = read('dist/wuying/demo/demo.js');
-  assert.match(html, /体验示例/);
-  assert.match(html, /class="workspace is-setup"/);
-  assert.match(html, /demo-entry/);
-  assert.match(html, /download="商品场景图改稿助手-发圈场景示例\.webp"/);
-  assert.match(js, /预置成片|预置图片/);
-  assert.doesNotMatch(html + js, /localhost|127\.0\.0\.1|项目内容即将更新/);
+test('旧工具地址跳转独立工具，作品集入口统一为功能体验', () => {
+  assert.match(read('dist/wuying/demo/index.html'), /https:\/\/product-scene-assistant\.netlify\.app/);
+  const source=read('dist/wuying/case.js');
+  assert.match(source,/功能体验/);
+  assert.doesNotMatch(source,/体验示例 ↗|打开发圈示例/);
 });
