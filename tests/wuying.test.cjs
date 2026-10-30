@@ -21,11 +21,20 @@ test('案例与体验入口不使用本机地址或占位页', () => {
   assert.match(source, /wuying\/demo\/\?demo=1/);
 });
 
-test('案例保留预置素材与待验证事实边界', () => {
+test('案例页保留开场概览卡、竖排章节导航与融合生成步骤', () => {
   const source = read('dist/wuying/case.js');
-  assert.match(source, /预置素材/);
-  assert.match(source, /仍待验证/);
-  assert.doesNotMatch(source, /目标用户假设|为什么这样设计|产品机会|赋能|抓手|闭环/);
+  for (const field of ['需求场景', '目标用户', '关键痛点', '产品切入点']) {
+    assert.match(source, new RegExp(field));
+  }
+  assert.match(source, /data-wy-nav/);
+  assert.match(source, /提示词标签/);
+  assert.match(source, /融合生成/);
+  assert.doesNotMatch(source, /产品规划 · 交互设计|参考与成片可切换|碎碎念|赋能|抓手/);
+});
+
+test('案例页不再包含旁白式标注', () => {
+  const source = read('dist/wuying/case.js');
+  assert.doesNotMatch(source, /预置素材|已分别跑通|仍待验证|真实商家访谈/);
 });
 
 test('物映本地图片与体验页资源都存在', () => {
