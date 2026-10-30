@@ -91,13 +91,13 @@ const WY_ISSUES = [
 
 function commerceCase() {
   return `<article class="wy-case" aria-labelledby="wy-title">
-    <header class="wy-hero">
+    <div class="page-heading">
       <div>
         <h1 id="wy-title">物映</h1>
         <p>小物件商品图改稿助手——从一张随手拍开始，先确认商品没被改坏，再生成场景、逐版调整。</p>
       </div>
       <a class="button primary" href="wuying/demo/?demo=1" target="_blank" rel="noopener">体验示例 ↗</a>
-    </header>
+    </div>
 
     <section class="wy-brief" aria-label="项目概览">
       <article><span>需求场景</span><p>小商家要一张商品准确、氛围合适的宣传图，卡在“判断哪里不对、下一步怎么改”。</p></article>
@@ -112,14 +112,13 @@ function commerceCase() {
       <figure><img src="wuying/assets/result.webp" alt="格纹发圈放在木桌上的场景成片"><figcaption><b>场景成片</b></figcaption></figure>
     </div>
 
-    <div class="wy-body">
-      <nav class="wy-rail" aria-label="案例章节">
-        <a href="#wy-scenario" data-wy-nav="wy-scenario"><b>01</b>需求与痛点</a>
-        <a href="#wy-process" data-wy-nav="wy-process"><b>02</b>产品流程</a>
-        <a href="#wy-evaluation" data-wy-nav="wy-evaluation"><b>03</b>评测与迭代</a>
-      </nav>
+    <nav class="wy-nav" aria-label="案例章节">
+      <a href="#wy-scenario" data-wy-nav="wy-scenario" class="is-active"><span class="wy-stage-label">01 需求与痛点</span><span class="wy-stage-bar"></span></a>
+      <a href="#wy-process" data-wy-nav="wy-process"><span class="wy-stage-label">02 产品流程</span><span class="wy-stage-bar"></span></a>
+      <a href="#wy-evaluation" data-wy-nav="wy-evaluation"><span class="wy-stage-label">03 评测与迭代</span><span class="wy-stage-bar"></span></a>
+    </nav>
 
-      <div class="wy-main">
+    <div class="wy-main">
         <section class="wy-section" id="wy-scenario">
           <div class="wy-section-head">
             <h2>图片不满意，却说不清怎么改</h2>
@@ -170,11 +169,6 @@ function commerceCase() {
               <div class="wy-checks" id="wy-step-checks"></div>
               <button class="button" id="wy-next-step">下一步 <span aria-hidden="true">→</span></button>
             </div>
-          </div>
-          <div class="wy-role-strip">
-            <span><b>AI</b>精修、场景提取与改稿</span>
-            <span><b>程序</b>保存版本、合成与导出</span>
-            <span><b>用户</b>核对商品、确认结果</span>
           </div>
         </section>
 

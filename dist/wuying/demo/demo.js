@@ -10,10 +10,8 @@ const $ = selector => document.querySelector(selector);
 function renderDemo(index) {
   demoIndex = index;
   const item = demoSteps[index];
-  document.querySelectorAll('[data-demo-step]').forEach((button, i) => {
-    button.classList.toggle('is-active', i === index);
-    if (i === index) button.setAttribute('aria-current', 'step');
-    else button.removeAttribute('aria-current');
+  document.querySelectorAll('.steps .step').forEach((el, i) => {
+    el.classList.toggle('active', i === index);
   });
   const image = $('#demo-image');
   image.src = `../assets/${item.image}.webp`;
@@ -27,7 +25,7 @@ function renderDemo(index) {
   $('#demo-revise').hidden = index !== 3;
   $('#demo-download').hidden = index !== 3;
 }
-document.querySelectorAll('[data-demo-step]').forEach(button => button.addEventListener('click', () => renderDemo(Number(button.dataset.demoStep))));
+document.querySelectorAll('.steps .step').forEach((el, i) => el.addEventListener('click', () => renderDemo(i)));
 document.querySelectorAll('[data-revise]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-revise]').forEach(other => other.classList.toggle('is-selected', other === button));
   $('#demo-revise-copy').textContent = `修改说明：${button.dataset.revise}`;

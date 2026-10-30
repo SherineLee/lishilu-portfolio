@@ -4,33 +4,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="物映发圈交互示例：查看商品精修、风格参考、场景成片和改稿流程。">
-  <meta name="theme-color" content="#f0f1f3">
-  <title>发圈交互示例 · 物映</title>
+  <meta name="theme-color" content="#f2f4f7">
+  <title>物映 · 发圈交互示例</title>
   <link rel="stylesheet" href="demo.css">
   <script src="demo.js" defer></script>
 </head>
 <body>
-  <header class="demo-header">
-    <a class="demo-brand" href="../../#commerce" aria-label="返回物映案例"><span>物</span><b>物映</b><small>发圈交互示例</small></a>
-    <a class="demo-back" href="../../#commerce">返回案例 ↗</a>
+  <header>
+    <div class="brand"><span class="mark">物</span>物映 <span class="brand-sub">小物件商品图助手</span></div>
+    <div class="header-right"><a class="demo-back" href="../../#commerce">返回案例 ↗</a></div>
   </header>
-  <main>
-    <section class="demo-intro">
-      <div><p class="demo-kicker">WUYING / GUIDED DEMO</p><h1>用一只格纹发圈，<br>走一遍改稿流程。</h1></div>
-      <p>使用预置图片，不上传、不调用生图。<br>可以查看流程，并下载示例成片。</p>
-    </section>
-    <nav class="demo-steps" aria-label="示例流程">
-      <button class="is-active" data-demo-step="0" aria-current="step"><b>1</b><span>原始照片</span></button>
-      <button data-demo-step="1"><b>2</b><span>精修对照</span></button>
-      <button data-demo-step="2"><b>3</b><span>风格参考</span></button>
-      <button data-demo-step="3"><b>4</b><span>场景成片</span></button>
-    </nav>
-    <section class="demo-workspace">
-      <div class="demo-canvas">
-        <img id="demo-image" src="../assets/original.webp" alt="手持格纹发圈的原始照片">
-        <span class="demo-image-label" id="demo-image-label">原始照片</span>
-      </div>
-      <div class="demo-panel" aria-live="polite">
+  <nav class="steps" aria-label="制作进度">
+    <div class="step active"><b>1</b>上传商品</div>
+    <div class="step"><b>2</b>精修确认</div>
+    <div class="step"><b>3</b>生成场景</div>
+    <div class="step"><b>4</b>调整导出</div>
+  </nav>
+  <main id="workspace" class="workspace">
+    <div class="demo-heading">
+      <h1>用一只格纹发圈，走一遍改稿流程。</h1>
+      <p>使用预置图片，不上传、不调用生图。可以逐步查看，并下载示例成片。</p>
+    </div>
+    <section class="demo-body">
+      <aside class="panel demo-panel" aria-live="polite">
         <span class="demo-count" id="demo-count">01 / 04</span>
         <h2 id="demo-title">从一张随手拍开始</h2>
         <p id="demo-copy">原图会保留。后续精修如果不像原来的商品，可以随时退回来。</p>
@@ -42,8 +38,14 @@
           <p id="demo-revise-copy">选择后可查看具体修改说明；公开示例不会生成新图片。</p>
         </div>
         <div class="demo-actions">
-          <button class="demo-next" id="demo-next">查看精修示例 →</button>
+          <button class="primary demo-next" id="demo-next">查看精修示例 →</button>
           <a class="demo-download" id="demo-download" href="../assets/result.webp" download="物映-发圈场景示例.webp" hidden>下载示例图 ↓</a>
+        </div>
+      </aside>
+      <div class="canvas">
+        <div class="canvas-frame">
+          <img id="demo-image" src="../assets/original.webp" alt="手持格纹发圈的原始照片">
+          <span class="demo-image-label" id="demo-image-label">原始照片</span>
         </div>
       </div>
     </section>
