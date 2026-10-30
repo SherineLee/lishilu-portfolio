@@ -1,4 +1,4 @@
-/* 物映 · 小物件商品图助手 —— 公开交互示例
+/* 商品场景图改稿助手 · 小物件商品图助手 —— 公开交互示例
    视觉与布局忠实还原原工具（浅蓝白 + 初始空白态 + 点「体验示例」后进入流程）。 */
 :root{--ink:#25333f;--muted:#63717d;--line:#dde3e8;--blue:#285ce0;--pale:#edf2ff;--bg:#f2f4f7;--surface:#fff}
 *{box-sizing:border-box}
@@ -182,3 +182,6 @@ input:not([type=checkbox]){width:100%;border:1px solid var(--line);border-radius
   .steps{gap:8px}
   .setup-heading h1{font-size:24px}
 }
+
+/* Responsive workflow correction */
+.workspace.is-result .setup-grid{grid-template-columns:1fr}.workspace.is-result .settings-section{grid-template-columns:1fr}.workspace.is-result .setup-heading h1{font-size:22px}.thumb,.reference-preview{height:auto!important;aspect-ratio:3/4}.label{flex-wrap:wrap}.seg{flex-wrap:wrap}.seg button{white-space:normal;min-width:90px;flex:1}.settings-section input{min-width:0}.brand{font-size:clamp(16px,2vw,24px);flex-wrap:wrap}.brand-sub{display:none}.workspace.is-result>.panel{width:100%}.right>.pad{padding:24px}.retouch-panel .label{display:block}.retouch-panel .seg{display:grid;grid-template-columns:1fr}.image-upload{margin-bottom:16px}dialog{width:min(640px,95vw);border:1px solid var(--line);border-radius:12px;padding:24px}dialog canvas{width:100%;touch-action:none;background:#eee}dialog::backdrop{background:#0006}.settings-section{align-items:start}.settings-section .seg input{width:45%}button{overflow-wrap:break-word}.workspace.is-result .thumb,.workspace.is-result .reference-preview{max-height:360px} @media(max-width:1000px){.workspace.is-result{display:block}.workspace.is-result>.panel{position:static;margin-bottom:20px}.workspace.is-result .setup-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.workspace{padding:0 12px 24px}.workspace.is-result .setup-grid{grid-template-columns:1fr}.brand{max-width:100%}}

@@ -1,4 +1,4 @@
-/* 物映案例页 —— 对齐作品集其他项目页的规范：
+/* 商品场景图改稿助手案例页 —— 对齐作品集其他项目页的规范：
    面包屑由 app.js 输出；标题字号/行距/按钮复用全站标准。 */
 .wy-case{max-width:none;margin:0;width:100%;color:var(--ink)}
 .wy-case *,.wy-case *:before,.wy-case *:after{box-sizing:border-box}

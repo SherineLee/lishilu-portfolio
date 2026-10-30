@@ -49,7 +49,7 @@ function render() {
   $('#retouchBtn').textContent = stage >= 2 ? '精修示例已展示' : '精修商品';
   $('#confirmMask').disabled = !loaded;
   $('#confirmMask').checked = stage >= 2;
-  $('#confirmBtn').disabled = !(loaded && stage >= 2);
+  $('#confirmBtn').disabled = !loaded;
 
   // 精修预览面板
   $('#retouchPanel').classList.toggle('hidden', stage < 2);
@@ -67,10 +67,10 @@ function render() {
   if (!$('#background').value) $('#background').value = hasRef ? STYLE_SCENE : '';
 
   // 生成按钮
-  const canGenerate = stage >= 2 && !!$('#background').value.trim();
+  const canGenerate = stage >= 2;
   $('#generate').disabled = !canGenerate;
   $('#generate').textContent = showResults ? '重新生成' : (stage >= 3 ? '查看示例成片' : '生成宣传图');
-  $('#formHint').textContent = !loaded ? '上传两张图片，确认商品后即可生成。' : (stage < 2 ? '查看精修示例，确认商品。' : '确认商品和画面描述后，即可生成。');
+  $('#formHint').textContent = !loaded ? '先上传商品并确认；参考图可选，也可以直接填写描述。' : (stage < 2 ? '查看精修示例，确认商品。' : '确认商品和画面描述后，即可生成。');
 
   // 画布
   $('#projectTitle').textContent = !loaded ? '先放入你的商品' : (showResults ? '格纹发圈' : '格纹发圈');
@@ -111,16 +111,22 @@ $('#demoBtn').addEventListener('click', () => {
   say('这是预置精修图，请核对颜色、纹样和文字');
 });
 
-// 上传按钮（公开示例：不能真上传，点击提示用体验示例）
-$('#uploadBtn').addEventListener('click', () => {
-  say('公开示例不支持上传，请点「体验示例」查看预置流程');
-});
-$('#refBtn').addEventListener('click', () => {
-  say('公开示例不支持上传，请点「体验示例」查看预置流程');
-});
-
+// Browser-local uploads: reference and product can be selected in either order.
+let customProduct = false;
+function selectImage(target) {
+ const input=document.createElement('input');input.type='file';input.accept='image/png,image/jpeg,image/webp';
+ input.onchange=()=>{const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{
+ if(target==='product'){customProduct=true;ASSET.original=reader.result;ASSET.refined=reader.result;stage=1;useRefined=false;showResults=false;}
+ else{ASSET.reference=reader.result;$('#refPreview').innerHTML=`<img alt="风格参考图" src="${reader.result}">`;$('#background').placeholder='请描述想参考的配色、材质和场景；自动识别需要连接 AI 服务';}
+ if(target==='product')render();
+ };reader.readAsDataURL(file);};input.click();
+}
+$('#uploadBtn').onclick=()=>selectImage('product');$('#refBtn').onclick=()=>selectImage('reference');
+$('#manualMask').onclick=()=>{if(stage<1){say('请先上传商品图片');return;}const d=$('#maskDialog'),c=$('#maskCanvas'),ctx=c.getContext('2d'),im=new Image();im.onload=()=>{ctx.clearRect(0,0,600,600);ctx.drawImage(im,0,0,600,600)};im.src=ASSET.original;d.showModal();let down=false;c.onpointerdown=e=>{down=true;c.setPointerCapture(e.pointerId)};c.onpointerup=()=>down=false;c.onpointermove=e=>{if(!down)return;const r=c.getBoundingClientRect();ctx.fillStyle='rgba(40,92,224,.35)';ctx.beginPath();ctx.arc((e.clientX-r.left)*600/r.width,(e.clientY-r.top)*600/r.height,16,0,Math.PI*2);ctx.fill()};};
+$('#saveMask').onclick=()=>{$('#maskDialog').close();say('区域标记已保存于当前编辑画布');};
 // 精修商品
 $('#retouchBtn').addEventListener('click', () => {
+  if(customProduct){say('图片已上传；真实商品精修尚需连接服务端 AI 接口');return;}
   stage = 2;
   useRefined = true;
   render();
@@ -137,7 +143,7 @@ $('#acceptRetouch').addEventListener('click', () => { useRefined = true; render(
 $('#keepOriginal').addEventListener('click', () => { useRefined = false; render(); say('已保留原图'); });
 
 // 确认商品
-$('#confirmBtn').addEventListener('click', () => { render(); say('商品已确认'); });
+$('#confirmBtn').addEventListener('click', () => { stage=2; render(); say('商品已确认'); });
 
 // 识别参考图
 $('#analyzeBtn').addEventListener('click', () => { drawStyle(); say('已提取画面描述，可以继续修改'); });
@@ -153,11 +159,12 @@ $('#ratios').addEventListener('click', e => {
 
 // 生成宣传图（预置成片）
 $('#generate').addEventListener('click', () => {
-  showResults = true;
+  if(customProduct){say('自有图片的宣传图生成尚需连接服务端 AI 接口');return;}
+  $('#generate').disabled=true;
   $('#jobStatus').classList.remove('hidden');
-  $('#jobStatus').textContent = '正在生成…';
+  $('#jobStatus').textContent = '正在准备示例效果…';
   setTimeout(() => {
-    $('#jobStatus').textContent = '图片已保存';
+    showResults=true;render();$('#jobStatus').textContent = '示例效果已就绪';
     setTimeout(() => $('#jobStatus').classList.add('hidden'), 2000);
   }, 900);
   render();

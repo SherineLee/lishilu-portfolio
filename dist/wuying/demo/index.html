@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="保留真实商品，生成背景并通过看图选择完成改稿。">
   <meta name="theme-color" content="#f2f4f7">
-  <title>物映 · 小物件商品图助手</title>
+  <title>商品场景图改稿助手 · 小物件商品图助手</title>
   <link rel="stylesheet" href="demo.css">
   <script src="demo.js" defer></script>
 </head>
 <body>
   <header>
-    <div class="brand"><span class="mark">物</span>物映 <span class="brand-sub">小物件商品图助手</span></div>
-    <div class="header-right"><a class="demo-back" href="../../#commerce">返回案例 ↗</a></div>
+    <div class="brand"><span class="mark">物</span>商品场景图改稿助手 <span class="brand-sub">小物件商品图助手</span></div>
+    <div class="header-right"><a class="demo-back" href="../../#commerce">返回项目介绍</a></div>
   </header>
 
   <nav class="steps" aria-label="制作进度">
@@ -46,7 +46,7 @@
           <button id="uploadBtn" class="image-upload">
             <span id="thumb" class="thumb"><span class="upload-placeholder"><span class="upload-plus">＋</span>上传商品图片</span></span>
           </button>
-          <div class="file"><small id="filename">PNG 或 JPEG</small><button id="originalSetup" class="quiet" disabled>查看原图</button></div>
+          <div class="file hidden"><small id="filename">PNG 或 JPEG</small><button id="originalSetup" class="quiet" disabled>查看原图</button></div>
           <div class="retouch-actions"><button id="retouchBtn" class="primary wide" disabled>精修商品</button></div>
           <div id="retouchPanel" class="retouch-panel hidden">
             <div class="label"><h3>精修预览</h3><button id="compareRetouch" class="quiet">放大对比</button></div>
@@ -54,7 +54,7 @@
             <p>核对颜色、纹样和文字，再决定是否使用。</p>
             <div class="seg"><button id="acceptRetouch" class="primary">使用精修图</button><button id="keepOriginal">保留原图</button></div>
           </div>
-          <label class="confirm-row"><input id="confirmMask" type="checkbox">商品边缘完整，没有缺失</label>
+          <button id="manualMask" class="wide">手动修正边缘</button><label class="confirm-row"><input id="confirmMask" type="checkbox">商品边缘完整，没有缺失</label>
           <button id="confirmBtn" class="wide" disabled>确认商品</button>
         </section>
 
@@ -63,16 +63,16 @@
           <button id="refBtn" class="image-upload">
             <span id="refPreview" class="reference-preview"><span class="upload-placeholder"><span class="upload-plus">＋</span>上传喜欢的图片</span></span>
           </button>
-          <div class="file"><small id="refName">参考图片的配色、材质和场景</small><button id="analyzeBtn" class="quiet" disabled>重新识别</button></div>
+          <div class="file hidden"><small id="refName">参考图片的配色、材质和场景</small><button id="analyzeBtn" class="quiet" disabled>重新识别</button></div>
           <div id="analysis" class="style-summary" aria-live="polite"></div>
           <label class="field-label" for="background">画面描述</label>
-          <textarea id="background" placeholder="上传参考图后自动填写，也可以补充你的想法"></textarea>
+          <textarea id="background" placeholder="直接描述想要的场景，也可以上传参考图"></textarea>
         </section>
 
         <section class="settings-section">
-          <div><h2>画面比例</h2><div class="seg" id="ratios"><button class="selected" data-ratio="3:4">竖版 3:4</button><button data-ratio="1:1">方形 1:1</button></div></div>
-          <div><label for="titleInput"><h2>画面标题 <span class="small">选填</span></h2></label><input id="titleInput" maxlength="24" placeholder="例如：把月光戴在身上" aria-label="画面标题"></div>
-        </section>
+          <div><h2>画面比例</h2><div class="seg" id="ratios"><button class="selected" data-ratio="3:4">竖版 3:4</button><button data-ratio="1:1">方形 1:1</button><button data-ratio="4:3">横版 4:3</button></div></div>
+          <div><label>自定义尺寸（像素）</label><div class="seg"><input id="widthInput" type="number" min="256" max="4096" value="768" aria-label="宽度"><input id="heightInput" type="number" min="256" max="4096" value="1024" aria-label="高度"></div></div><div><label for="titleInput"><h2>画面标题 <span class="small">选填</span></h2></label><input id="titleInput" maxlength="24" placeholder="例如：把月光戴在身上" aria-label="画面标题"></div>
+        <div><label for="subtitleInput">副标题（选填）</label><input id="subtitleInput" maxlength="60" placeholder="补充一句商品介绍"></div></section>
 
         <section class="form-actions">
           <div class="job hidden" id="jobStatus" role="status" aria-live="polite"></div>
@@ -128,12 +128,12 @@
           <label><input type="checkbox" data-check="1">商品边缘完整，没有缺失</label>
           <label><input type="checkbox" data-check="2">画面和标题符合我的要求</label>
         </div>
-        <a id="exportBtn" class="wide primary" style="margin-top:24px" href="../assets/result.webp" download="物映-发圈场景示例.webp">下载图片</a>
+        <a id="exportBtn" class="wide primary" style="margin-top:24px" href="../assets/result.webp" download="商品场景图改稿助手-发圈场景示例.webp">下载图片</a>
         <p class="small" id="checksHint">完成三项检查后可下载。</p>
       </div>
     </aside>
   </main>
 
-  <div id="toast" class="toast" role="status"></div>
+  <dialog id="maskDialog"><h2>涂抹需要保留的商品区域</h2><p>拖动涂抹，关闭后可继续操作。</p><canvas id="maskCanvas" width="600" height="600"></canvas><button id="saveMask">保存并关闭</button><button onclick="this.closest('dialog').close()">关闭</button></dialog><div id="toast" class="toast" role="status"></div>
 </body>
 </html>
