@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=process.cwd(),source=path.join(root,'work/cloudflare-pages-worker'),out=path.join(root,'work/cloudflare-pages-site');
+fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.cpSync(path.join(root,'dist'),out,{recursive:true});
+let worker=fs.readFileSync(path.join(source,'worker.js'),'utf8');
+worker=worker.replace(/^import (\w+) from "(\.\/[^"\n]+\.md)";$/gm,(_,name,file)=>'const '+name+'='+JSON.stringify(fs.readFileSync(path.resolve(source,file),'utf8'))+';');
+if(/^import .*from "\.\//m.test(worker))throw Error('Unexpected external server module; refusing to expose it as a static asset');
+worker=worker.replace(/\/\/# sourceMappingURL=.*$/gm,'');
+fs.writeFileSync(path.join(out,'_worker.js'),worker);
+fs.writeFileSync(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/api/*'],exclude:[]},null,2));
+console.log('Pages artifact ready: '+out+'; private knowledge remains inside the server Worker only.');

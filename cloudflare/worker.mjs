@@ -1,0 +1,10 @@
+import createAvatarHandler from '../api/avatar-handler.cjs';
+import supplement from '../api/knowledge/shilu.md';
+import aigc from '../api/knowledge/aigc.md';
+import auth from '../api/editor/auth.js';
+import publish from '../api/editor/publish.js';
+import pdf from '../api/editor/pdf.js';
+import {invokeNode} from './bridge.mjs';
+const avatar=createAvatarHandler({supplement,aigc});
+const routes={'/api/chat':avatar,'/api/editor/auth':auth,'/api/editor/publish':publish,'/api/editor/pdf':pdf};
+export default {async fetch(request,env){const path=new URL(request.url).pathname;if(path==='/api/health')return Response.json({ok:true,provider:'cloudflare',modelConfigured:!!(env.DEEPSEEK_API_KEY||env.ARK_API_KEY||env.DASHSCOPE_API_KEY),knowledge:env.FEISHU_APP_ID&&env.FEISHU_APP_SECRET?'feishu':'portfolio'});if(routes[path])return invokeNode(routes[path],request);if(path.startsWith('/api/'))return Response.json({error:'接口不存在。'},{status:404});return env.ASSETS.fetch(request)}};

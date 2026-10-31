@@ -12,3 +12,6 @@ work/
 pages-site/
 
 .netlify/
+
+.wrangler/
+.dev.vars*

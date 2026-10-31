@@ -35,7 +35,7 @@ bar.addEventListener('click',e=>{const action=e.target.closest('[data-draft]')?.
  if(action==='undo'&&undo.length){redo.push(JSON.stringify(patches));patches=JSON.parse(undo.pop());save();refresh();}
  if(action==='redo'&&redo.length){undo.push(JSON.stringify(patches));patches=JSON.parse(redo.pop());save();refresh();}
  if(action==='reset'&&confirm('清空所有页面的本地草稿，恢复已发布内容？此操作仍可撤销。')){snapshot();patches={};save();refresh();}
- if(action==='export'){const blob=new Blob([JSON.stringify({format:'shilu-portfolio-draft',version:1,site:'https://lishilu-portfolio.vercel.app/',exportedAt:new Date().toISOString(),patches},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='作品集修改-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+ if(action==='export'){const blob=new Blob([JSON.stringify({format:'shilu-portfolio-draft',version:1,site:'https://lishilu-portfolio.pages.dev/',exportedAt:new Date().toISOString(),patches},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='作品集修改-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 });
 window.addEventListener('beforeunload',()=>document.activeElement?.blur());
 window.portfolioDraft={render,getPatches:()=>JSON.parse(JSON.stringify(patches)),clearPublished(sent){snapshot();for(const[page,items]of Object.entries(sent)){for(const[selector,p]of Object.entries(items))if(JSON.stringify(patches[page]?.[selector])===JSON.stringify(p))delete patches[page][selector];if(patches[page]&&!Object.keys(patches[page]).length)delete patches[page];}save();refresh();}};save();render();

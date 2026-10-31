@@ -18,7 +18,7 @@ test('commerce 路由渲染商品场景图改稿助手案例并初始化交互',
 test('案例与体验入口不使用本机地址或占位页', () => {
   const source = read('dist/wuying/case.js') + read('dist/wuying/demo/index.html');
   assert.doesNotMatch(source, /localhost|127\.0\.0\.1|项目内容即将更新/);
-  assert.match(source, /https:\/\/product-scene-assistant\.netlify\.app\//);
+  assert.match(source, /https:\/\/product-scene-assistant\.pages\.dev\//);
 });
 
 test('案例页保留开场概览卡、竖排章节导航与融合生成步骤', () => {
@@ -44,7 +44,7 @@ test('商品场景图改稿助手本地图片与体验页资源都存在', () =>
 });
 
 test('旧工具地址跳转独立工具，作品集入口统一为功能体验', () => {
-  assert.match(read('dist/wuying/demo/index.html'), /https:\/\/product-scene-assistant\.netlify\.app/);
+  assert.match(read('dist/wuying/demo/index.html'), /https:\/\/product-scene-assistant\.pages\.dev/);
   const source=read('dist/wuying/case.js');
   assert.match(source,/功能体验/);
   assert.doesNotMatch(source,/体验示例 ↗|打开发圈示例/);

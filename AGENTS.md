@@ -1,18 +1,18 @@
 # 作品集维护约定
 
-用户于2026-10-28明确要求：此后每次修改网站，都提交GitHub并由Vercel上线。不只修改本地后交付。
+用户于2026-10-31确认迁移Cloudflare；此后每次修改网站，都提交GitHub并部署Cloudflare Pages。不只修改本地后交付。
 
 ## 正式来源
 - GitHub：SherineLee/lishilu-portfolio（私有）。
 - 分支：main。
 - 网站源文件：dist/，构建验证：npm run build。
-- Vercel正式域名与项目以DEPLOYMENT.md的核验记录为准，不另建同名项目或更换域名。
+- Cloudflare Pages正式域名与项目以CLOUDFLARE.md及DEPLOYMENT.md的最新记录为准，不另建同名项目或更换域名。
 
 ## 每次改动
 1. 保留用户既有架构、内容方向与无关修改；按实际证据区分实现、评测、试用与未来设想。
 2. 修改后运行npm run build；涉及界面/交互时预览对应流程，检查手机布局。
 3. 完成Git提交并推送main。用户已授权此工作流，不要再次要求确认普通提交或部署。
-4. 推送后等待Vercel对应提交的生产部署Ready，打开正式网站核对修改。
+4. 推送后运行npm run deploy:cloudflare，等待Cloudflare Pages部署成功，打开正式网站核对修改；Git推送不会自动发布。
 5. 回报提交哈希、部署状态、正式地址和验收范围。失败时明确停在哪一步，不能把本地完成当上线。
 6. Git认证不可用时先检查现有官方CLI/凭据；可用已登录GitHub浏览器完成相同文件的提交。不要导出浏览器Cookie、窃取会话或创建未经授权的广泛访问凭据。
 

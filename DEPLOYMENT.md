@@ -1,3 +1,12 @@
+# 当前正式入口：Cloudflare Pages（2026-10-31）
+
+作品集：https://lishilu-portfolio.pages.dev/
+独立工具：https://product-scene-assistant.pages.dev/
+
+部署命令：npm run deploy:cloudflare。完整配置与验收步骤见 CLOUDFLARE.md。以下 Netlify / Vercel 记录仅为历史，不作为当前发布指令。
+
+---
+
 # 正式入口更新（2026-10-30）
 
 作品集：https://lishilu-portfolio.netlify.app/ ，项目介绍 #commerce。
