@@ -5,6 +5,7 @@
   var hash = (location.hash || '').replace(/^#/, '');
   var auto = !edit && (!hash || hash === 'home' || hash.indexOf('home/') === 0);
   var pending = null;
+  if(auto){document.documentElement.classList.add('cabin-loading');var cover=document.createElement('style');cover.textContent='html.cabin-loading body{background:#eaf1f7}html.cabin-loading body>header,html.cabin-loading body>main,html.cabin-loading body>footer,html.cabin-loading .edge{visibility:hidden}';document.head.appendChild(cover);}
 
   function ensureCss() {
     if (document.getElementById('cb-css')) return;
@@ -25,7 +26,7 @@
       var list = pending; pending = null;
       (list || []).forEach(function (fn) { fn && fn(); });
     };
-    script.onerror = function () { pending = null; };
+    script.onerror = function () { pending = null; document.documentElement.classList.remove('cabin-loading'); };
     document.head.appendChild(script);
   }
 
@@ -52,7 +53,7 @@
     if (!auto) return;
     var visited = false;
     try { visited = sessionStorage.getItem(KEY) === '1'; } catch (e) { /* ignore */ }
-    load(function () { window.Cabin && window.Cabin.start(visited ? 'hall' : 'snow'); });
+    load(function () { if(window.Cabin)Promise.resolve(window.Cabin.start(visited ? 'hall' : 'snow')).finally(function(){document.documentElement.classList.remove('cabin-loading');});else document.documentElement.classList.remove('cabin-loading'); });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
