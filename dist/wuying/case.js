@@ -204,7 +204,8 @@ function commerceCase() {
             <div><span>产出</span><p id="wy-loop-output"></p></div>
           </div>
 
-          <div class="wy-subhead"><h3>两个已经遇到的问题</h3></div>
+          <div class="wy-subhead"><h3>Bad Case：从失败图片定位产品问题</h3></div>
+          <div class="wy-badcase-evidence"><img src="wuying/assets/bad-case-pose.png" alt="历史失败输出：发圈被套在花瓶上，副标题出现错字"><div><h3>商品关系错误，文案也失真</h3><p>历史实测中，模型把发圈当作花瓶装饰，并生成了错误副标题。这类结果即使氛围好看，也不能交付。</p><h4>定位问题</h4><p>将问题分成商品身份、摆放关系和文字准确性三项。先检查送入模型的商品图与参考图顺序，再核对提示词有没有说明参考图只提供氛围、发圈应自然放在桌面。</p><h4>调整策略</h4><p>固定商品图为身份参考，背景图只提取配色、光线和构图；为发圈增加自然平放、合理接触阴影的约束，并排除套在花瓶上的摆放。标题改为生成后排版，逐字使用用户输入，避免模型重写文字。</p><h4>验证是否改善</h4><p>保留这张失败输入与输出，固定模型版本、尺寸和提示词版本，批量比较原策略与新策略。人工标注商品结构、摆放合理性与文字准确率，同时记录重试次数和单张成本；改善结论待同批复测后确认。</p></div></div>
           <div class="wy-issue-tabs" role="tablist" aria-label="真实问题案例">
             <button class="is-active" role="tab" aria-selected="true" data-wy-issue="0">透明背景丢失</button>
             <button role="tab" aria-selected="false" data-wy-issue="1">指令没有执行</button>
