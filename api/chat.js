@@ -27,7 +27,7 @@ function allowed(req){const origin=req.headers.origin;return (origin==='https://
 function throttle(req){const ip=String(req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0];const key=crypto.createHash('sha256').update(ip).digest('hex');const now=Date.now();for(const[k,v]of visitors)if(v.until<now)visitors.delete(k);let value=visitors.get(key)||{count:0,until:now+60000};if(value.count>=8||inFlight>=4||visitors.size>2000)throw new ServiceError(429,'提问有些频繁，请稍等一分钟再试。');value.count++;visitors.set(key,value);}
 module.exports=async function handler(req,res){if(require('../server/cors.cjs')(req,res))return;res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json; charset=utf-8');if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({error:'请通过对话框提问。'});}if(!allowed(req))return res.status(403).json({error:'请从作品集网站发起提问。'});
  let active=false;try{
- if(!(process.env.DEEPSEEK_API_KEY||process.env.ARK_API_KEY)||!process.env.FEISHU_APP_ID||!process.env.FEISHU_APP_SECRET)throw new ServiceError(503,'分身正在连接个人知识库，请稍后再来聊聊。');
+ if(!(process.env.DEEPSEEK_API_KEY||process.env.ARK_API_KEY||process.env.DASHSCOPE_API_KEY))throw new ServiceError(503,'分身正在连接个人知识库，请稍后再来聊聊。');
  if(Number(req.headers['content-length'])>15000)throw new ServiceError(413,'消息过长，请精简后再试。');
  let body=req.body;if(typeof body==='string'){try{body=JSON.parse(body);}catch{throw new ServiceError(400,'消息格式不正确。');}}
  if(!body||typeof body.question!=='string'||!body.question.trim()||body.question.length>600)throw new ServiceError(400,'请输入 1–600 字的问题。');
@@ -35,10 +35,11 @@ module.exports=async function handler(req,res){if(require('../server/cors.cjs')(
  throttle(req);inFlight++;active=true;
  const boundary=policy.preflight(question);if(boundary)return res.status(200).json(boundary);
  if(policy.metricQuestion(question))return res.status(200).json({answer:policy.METRICS,grounded:false});
- const text=await knowledge();const context=retrieve(supplement,history.filter(m=>m.role==='user').slice(-1).map(m=>m.content).join('\n')+'\n'+question).concat(retrieve(text,question).slice(0,3));
+ const text=process.env.FEISHU_APP_ID&&process.env.FEISHU_APP_SECRET?await knowledge():'';const context=retrieve(supplement,history.filter(m=>m.role==='user').slice(-1).map(m=>m.content).join('\n')+'\n'+question).concat(retrieve(text,question).slice(0,3));
  if(/AIGC|长卷|生图|ComfyUI|生成式|最近.*尝试/i.test(question))context.unshift(aigc);
  if(!context.length)return res.status(200).json({answer:policy.UNKNOWN,grounded:false});
- const data=await jsonFetch('https://api.deepseek.com/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${process.env.DEEPSEEK_API_KEY||process.env.ARK_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.DEEPSEEK_MODEL||'deepseek-flash',thinking:{type:'disabled'},messages:[{role:'system',content:policy.SYSTEM+'参考内容：'+JSON.stringify(context)},...history,{role:'user',content:question}],max_tokens:300,stream:false})},25000);
+ const useDeepSeek=!!(process.env.DEEPSEEK_API_KEY||process.env.ARK_API_KEY);
+ const data=await jsonFetch(useDeepSeek?'https://api.deepseek.com/chat/completions':'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${process.env.DEEPSEEK_API_KEY||process.env.ARK_API_KEY||process.env.DASHSCOPE_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:useDeepSeek?(process.env.DEEPSEEK_MODEL||'deepseek-flash'):(process.env.AVATAR_MODEL||'qwen3-vl-plus'),...(useDeepSeek?{thinking:{type:'disabled'}}:{}),messages:[{role:'system',content:policy.SYSTEM+'参考内容：'+JSON.stringify(context)},...history,{role:'user',content:question}],max_tokens:300,stream:false})},25000);
  const answer=data.choices?.[0]?.message?.content;if(typeof answer!=='string'||!answer.trim())throw new ServiceError(502,'分身暂时没有生成回复，请稍后再试。');return res.status(200).json(policy.finish(answer,question));
  }catch(error){return res.status(error.status||500).json({error:error instanceof ServiceError?error.message:'暂时无法回答，请稍后再试。'});}finally{if(active)inFlight--;}
 };
