@@ -7,3 +7,10 @@
   from = "/api/commerce"
   to = "/.netlify/functions/commerce"
   status = 200
+
+[functions.chat]
+  included_files = ["api/knowledge/*.md"]
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200

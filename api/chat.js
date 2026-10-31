@@ -3,8 +3,9 @@ const crypto = require('node:crypto');
 const fs=require('node:fs');
 const path=require('node:path');
 const policy=require('./answer-policy.cjs');
-const supplement=fs.readFileSync(path.join(__dirname,'knowledge/shilu.md'),'utf8');
-const aigc=fs.readFileSync(path.join(__dirname,'knowledge/aigc.md'),'utf8');
+const knowledgeDir=fs.existsSync(path.join(__dirname,'knowledge'))?path.join(__dirname,'knowledge'):path.join(process.cwd(),'api/knowledge');
+const supplement=fs.readFileSync(path.join(knowledgeDir,'shilu.md'),'utf8');
+const aigc=fs.readFileSync(path.join(knowledgeDir,'aigc.md'),'utf8');
 const DOC_ID = 'JNkNdRWnCo0awmxLBXEcp6tjnbb';
 let tokenCache={token:'',until:0}, docCache={text:'',until:0};
 const visitors=new Map();let inFlight=0;
@@ -22,7 +23,7 @@ async function knowledge(){if(docCache.text&&docCache.until>Date.now())return do
 function chunks(text){const out=[];for(let i=0;i<text.length;i+=550)out.push(text.slice(i,i+750));return out;}
 function terms(text){const normalized=text.toLowerCase().replace(/\s/g,'');const set=new Set(normalized.match(/[a-z0-9]{2,}/g)||[]);for(const c of normalized.match(/[\u4e00-\u9fff]+/g)||[])for(let i=0;i<c.length-1;i++)set.add(c.slice(i,i+2));return [...set].filter(t=>!['什么','的是','你有','你的','一个','可以','如何','多少'].includes(t));}
 function retrieve(text,question){const query=terms(question);if(!query.length)return [];return chunks(text).map((content,index)=>({content,index,score:query.reduce((n,t)=>n+(content.toLowerCase().includes(t)?1:0),0)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,6).sort((a,b)=>a.index-b.index).map(x=>x.content);}
-function allowed(req){const origin=req.headers.origin;return (origin==='https://lishilu-portfolio.vercel.app'||origin==='https://sherinelee.github.io')||/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin||'');}
+function allowed(req){const origin=req.headers.origin;return (origin==='https://lishilu-portfolio.vercel.app'||origin==='https://sherinelee.github.io'||origin==='https://lishilu-portfolio.netlify.app'||(!!process.env.URL&&origin===process.env.URL))||/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin||'');}
 function throttle(req){const ip=String(req.headers['x-forwarded-for']||req.socket?.remoteAddress||'unknown').split(',')[0];const key=crypto.createHash('sha256').update(ip).digest('hex');const now=Date.now();for(const[k,v]of visitors)if(v.until<now)visitors.delete(k);let value=visitors.get(key)||{count:0,until:now+60000};if(value.count>=8||inFlight>=4||visitors.size>2000)throw new ServiceError(429,'提问有些频繁，请稍等一分钟再试。');value.count++;visitors.set(key,value);}
 module.exports=async function handler(req,res){if(require('../server/cors.cjs')(req,res))return;res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json; charset=utf-8');if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({error:'请通过对话框提问。'});}if(!allowed(req))return res.status(403).json({error:'请从作品集网站发起提问。'});
  let active=false;try{

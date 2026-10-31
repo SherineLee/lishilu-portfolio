@@ -8,6 +8,8 @@ const before=Object.fromEntries(fields.map(k=>[k,process.env[k]]));
 try{
  await t.test('unconfigured service returns an honest unavailable state',async()=>{fields.forEach(k=>delete process.env[k]);const res=response();await handler()(request(),res);assert.equal(res.code,503);assert.ok(!('answer'in res.data));});
  fields.forEach(k=>process.env[k]='test-value');
+ await t.test('Netlify origin reaches the endpoint and missing configuration is JSON',async()=>{const h=handler();const req=request();req.headers.origin='https://lishilu-portfolio.netlify.app';global.fetch=async()=>({ok:false,json:async()=>({})});const r=response();await h(req,r);assert.notEqual(r.code,403);assert.equal(typeof r.data.error,'string')});
+
  await t.test('rejects foreign origins and invalid messages without upstream calls',async()=>{global.fetch=()=>{throw Error('must not call')};const h=handler();for(const[req,status]of [[{...request(),headers:{origin:'https://other.example'}},403],[request({question:'a'.repeat(601)}),400],[{...request(),method:'GET'},405]]){const res=response();await h(req,res);assert.equal(res.code,status);}});
  await t.test('retrieves document then calls DeepSeek, without exposing raw documents',async()=>{const calls=[];global.fetch=async(url,opts)=>{calls.push({url,body:opts.body});return {ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'test-token',expire:7200}:url.includes('raw_content')?{code:0,data:{content:'我有三段产品实习，分别是腾讯元宝、美团点评、携程智行。'}}:{choices:[{message:{content:'我有三段产品实习。'}}]}}};const res=response();await handler()(request(),res);assert.equal(res.code,200);assert.equal(res.data.answer,'我有三段产品实习。');assert.equal(calls.length,3);assert.ok(calls[2].url.startsWith('https://api.deepseek.com/'));assert.ok(JSON.parse(calls[2].body).messages[0].content.includes('腾讯元宝'));assert.deepEqual(Object.keys(res.data).sort(),['answer','grounded']);});
  await t.test('unknown topic does not invent facts or spend a model call',async()=>{let count=0;global.fetch=async url=>{count++;return {ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'t',expire:7200}:{code:0,data:{content:'三段产品实习：腾讯元宝、美团点评、携程智行。'}}}};const res=response();await handler()(request({question:'喜欢什么宠物？'}),res);assert.equal(res.code,200);assert.equal(res.data.grounded,false);assert.equal(count,2);});
@@ -26,7 +28,8 @@ test('output gate blocks source commentary and metric disclosures',()=>{
 });
 test('private project metrics are diverted before model and document calls',async()=>{
  const saved=Object.fromEntries(fields.map(k=>[k,process.env[k]]));const prev=global.fetch;
- try{fields.forEach(k=>process.env[k]='test-value');global.fetch=()=>{throw Error('must not call upstream')};const res=response();await handler()(request({question:'和好喵测试了多少人？'}),res);assert.equal(res.code,200);assert.equal(res.data.answer,policy.METRICS);}
+ try{fields.forEach(k=>process.env[k]='test-value');
+global.fetch=()=>{throw Error('must not call upstream')};const res=response();await handler()(request({question:'和好喵测试了多少人？'}),res);assert.equal(res.code,200);assert.equal(res.data.answer,policy.METRICS);}
  finally{global.fetch=prev;for(const k of fields){if(saved[k]===undefined)delete process.env[k];else process.env[k]=saved[k];}}
 });
 test('supplement is server-only and contains interests without personal identifiers',()=>{
@@ -46,7 +49,8 @@ test('boundaries and topic reset survive prior emotional chat',()=>{
 });
 test('new AIGC question discards relationship history and includes portfolio evidence',async()=>{
  const saved=Object.fromEntries(fields.map(k=>[k,process.env[k]]));const prev=global.fetch;let payload;
- try{fields.forEach(k=>process.env[k]='test-value');global.fetch=async(url,opts)=>({ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'t',expire:7200}:url.includes('raw_content')?{code:0,data:{content:'产品经历'}}:(payload=JSON.parse(opts.body),{choices:[{message:{content:'我做过西湖和浙大的风格化长卷。'}}]})});
+ try{fields.forEach(k=>process.env[k]='test-value');
+global.fetch=async(url,opts)=>({ok:true,json:async()=>url.includes('tenant_access_token')?{code:0,tenant_access_token:'t',expire:7200}:url.includes('raw_content')?{code:0,data:{content:'产品经历'}}:(payload=JSON.parse(opts.body),{choices:[{message:{content:'我做过西湖和浙大的风格化长卷。'}}]})});
  const res=response();await handler()(request({question:'你最近做了哪些AIGC尝试？',history:[{role:'user',content:'我分手了'},{role:'assistant',content:'我陪着你'}]}),res);
  assert.equal(res.code,200);assert.equal(payload.messages.length,2);assert.match(payload.messages[0].content,/西湖十景/);assert.doesNotMatch(JSON.stringify(payload.messages),/我分手了/);
  }finally{global.fetch=prev;for(const k of fields){if(saved[k]===undefined)delete process.env[k];else process.env[k]=saved[k];}}

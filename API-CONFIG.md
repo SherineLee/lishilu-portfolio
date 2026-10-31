@@ -1,3 +1,12 @@
+# 当前配置：Netlify（2026-10-31）
+
+正式入口 https://lishilu-portfolio.netlify.app 。/api/chat 已由 Netlify Functions 承载。
+Production 中配置 DEEPSEEK_API_KEY、FEISHU_APP_ID、FEISHU_APP_SECRET。DEEPSEEK_MODEL 可选，默认 deepseek-flash；FEISHU_DOCUMENT_ID 可选，保留原文档。
+Vercel 敏感变量不能反向导出，请在 Netlify 重新安全填入；不要提交到 Git。
+变量变更后需重新部署。用真实追问气泡验证完整飞书检索及模型回答，不以模拟测试作为联通证据。
+
+---
+历史说明：
 # 我的分身：DeepSeek + 飞书文档
 
 ## Production 配置

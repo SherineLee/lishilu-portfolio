@@ -1,0 +1,2 @@
+const handler=require('../../api/chat.js');
+exports.handler=async event=>{let statusCode=200,body='',headers={'Content-Type':'application/json; charset=utf-8'};const response={setHeader(k,v){headers[k]=v},status(n){statusCode=n;return this},json(d){body=JSON.stringify(d);return this},end(){return this}};try{await handler({method:event.httpMethod,headers:event.headers,body:event.body||null},response)}catch{statusCode=500;body=JSON.stringify({error:'分身暂时连接不上，请稍后重试。'})}return{statusCode,headers,body}};
